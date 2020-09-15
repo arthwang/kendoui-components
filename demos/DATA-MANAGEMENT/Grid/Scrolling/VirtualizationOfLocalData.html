@@ -1,0 +1,213 @@
+<!DOCTYPE html>
+<html lang='en'>
+
+<head>
+  <meta charset='UTF-8'>
+  <meta name='viewport'
+        content='width=device-width, initial-scale=1.0'>
+  <meta http-equiv='X-UA-Compatible'
+        content='ie=edge'>
+  <title>Virtualization of local data</title>
+  <link rel='stylesheet'
+        href='http://kendo.cdn.telerik.com/2020.2.617/styles/kendo.common.min.css' />
+  <link rel='stylesheet'
+        href='http://kendo.cdn.telerik.com/2020.2.617/styles/kendo.default.min.css' />
+  <link rel='stylesheet'
+        href='http://kendo.cdn.telerik.com/2020.2.617/styles/kendo.mobile.all.min.css' />
+  <link rel='stylesheet'
+        href='/assets/examples.css' />
+  <script
+          src='http://kendo.cdn.telerik.com/2020.2.617/js/jquery.min.js'></script>
+  <script
+          src='http://kendo.cdn.telerik.com/2020.2.617/js/kendo.all.min.js'></script>
+  <script src='/assets/console.js'></script>
+  <script
+          src='/out/kendoui-components.js'></script>
+</head>
+
+<body>
+  <script
+          src="https://demos.telerik.com/kendo-ui/content/shared/js/people.js"></script>
+
+  <div id="example">
+    <div id="message"
+         class="box wide"></div>
+
+    <k-grid id="grid"
+            height=543
+            scrollable='{virtual:true}'
+            editable='{mode:"inline",createAt:"top"}'
+            toolbar='["create"]'
+            pageable='{
+                numeric: false,
+                previousNext: false,
+                messages: {
+                  display: "Showing {2} data items"
+                }
+              }'
+            columns='[
+                { field: "Id", title: "ID", width: "110px" },
+                { field: "FirstName", title: "First Name" },
+                { field: "LastName", title: "Last Name" },
+                { field: "City", title: "City" },
+                { field: "Title" },
+                { command: ["edit", "destroy"], title: "&nbsp;", width: "250px" }
+              ]'></k-grid>
+
+
+    <div class="box wide">
+      <div class="box-col">
+        <h4>Edit mode:</h4>
+        <k-drop-down-list id="editMode"
+                          data-source='{
+                              data: [
+                                { text: "Inline", value: "inline" },
+                                { text: "Incell", value: "incell" },
+                                { text: "Popup", value: "popup" }
+                              ]
+                            }'
+                          data-text-field='text'
+                          data-value-field='value'
+                          change='function(){applyOptions();}'>
+        </k-drop-down-list>
+      </div>
+      <div class="box-col">
+        <h4>Create at:</h4>
+        <k-drop-down-list id="createAt"
+                          data-source='{
+                                data: [
+                                  { text: "Top", value: "top" },
+                                  { text: "Bottom", value: "bottom" }
+                                ]
+                              }'
+                          data-text-field='text'
+                          data-value-field='value'
+                          change='function(){applyOptions()}'>
+        </k-drop-down-list>
+      </div>
+    </div>
+
+    <script>
+      var count = 100000;
+
+      $("#message").text(kendo.format("Generating {0} items", count));
+
+      generatePeople(count, function (data) {
+        var initStart;
+        var renderStart;
+
+        $("#message").text("");
+
+        var nextId = data.length + 1;
+
+        var dataSource = new kendo.data.DataSource({
+          pageSize: 20,
+          transport: {
+            create: function (e) {
+              if (e.data.models) {
+                //batch editing
+                for (var i = 0; i < e.data.models.length; i++) {
+                  e.data.models[i].Id = nextId++;
+                }
+                e.success(e.data.models);
+              } else {
+                e.data.Id = nextId++;
+                e.success(e.data);
+              }
+            },
+            read: function (e) {
+              e.success(data);
+            },
+            update: function (e) {
+              if (e.data.models) {
+                //batch editing
+                e.success(e.data.models);
+              } else {
+                e.success(e.data);
+              }
+            },
+            destroy: function (e) {
+              if (e.data.models) {
+                //batch editing
+                e.success(e.data.models);
+              } else {
+                e.success(e.data);
+              }
+            }
+          },
+          schema: {
+            model: {
+              id: "Id",
+              fields: {
+                Id: { type: "number", editable: false, nullable: true },
+                FirstName: { type: "string", validation: { required: true } },
+                LastName: { type: "string" },
+                City: { type: "string" },
+                Title: { type: "string" },
+              }
+            }
+          }
+        });
+
+
+        setTimeout(function () {
+          initStart = new Date();
+
+          $("#grid").data('kendoGrid').setOptions({ dataSource: dataSource });
+
+          initEnd = new Date();
+
+          $("#message").text(kendo.format("Kendo UI Grid bound to {0} items in {1} milliseconds", count, initEnd - initStart));
+        });
+      });
+
+
+      function applyOptions() {
+        var columns = [
+          { field: "Id", title: "ID", width: "110px" },
+          { field: "FirstName", title: "First Name" },
+          { field: "LastName", title: "Last Name" },
+          { field: "City", title: "City" },
+          { field: "Title" }
+        ];
+
+        var createAt = $("#createAt").data("kendoDropDownList").value();
+        var editMode = $("#editMode").data("kendoDropDownList").value();
+
+        var inlineOptions = {
+          dataSource: { batch: false },
+          editable: { mode: "inline", createAt: createAt },
+          columns: columns.concat([{ command: ["edit", "destroy"], title: "&nbsp;", width: "250px" }]),
+          toolbar: ["create"]
+        };
+
+        var incellOptions = {
+          dataSource: { batch: true },
+          editable: { mode: "incell", createAt: createAt },
+          columns: columns.concat([{ command: "destroy", title: "&nbsp;", width: 150 }]),
+          toolbar: ["create", "save", "cancel"]
+        };
+
+        var popupOptions = {
+          dataSource: { batch: false },
+          editable: { mode: "popup", createAt: createAt },
+          columns: columns.concat([{ command: ["edit", "destroy"], title: "&nbsp;", width: "250px" }]),
+          toolbar: ["create"]
+        };
+
+        var editOptions = {
+          incell: incellOptions,
+          inline: inlineOptions,
+          popup: popupOptions
+        };
+
+        var grid = $("#grid").data("kendoGrid");
+        grid.dataSource.page(1);
+        grid.setOptions($.extend({}, grid.getOptions(), editOptions[editMode]));
+      }
+    </script>
+  </div>
+
+</body>
+
+</html>

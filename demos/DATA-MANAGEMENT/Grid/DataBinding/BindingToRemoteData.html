@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang='en'>
+
+<head>
+  <meta charset='UTF-8'>
+  <meta name='viewport'
+        content='width=device-width, initial-scale=1.0'>
+  <meta http-equiv='X-UA-Compatible'
+        content='ie=edge'>
+  <title>Binding to remote data</title>
+  <link rel='stylesheet'
+        href='http://kendo.cdn.telerik.com/2020.2.617/styles/kendo.common.min.css' />
+  <link rel='stylesheet'
+        href='http://kendo.cdn.telerik.com/2020.2.617/styles/kendo.default.min.css' />
+  <link rel='stylesheet'
+        href='http://kendo.cdn.telerik.com/2020.2.617/styles/kendo.mobile.all.min.css' />
+  <link rel='stylesheet'
+        href='/assets/examples.css' />
+  <script
+          src='http://kendo.cdn.telerik.com/2020.2.617/js/jquery.min.js'></script>
+  <script
+          src='http://kendo.cdn.telerik.com/2020.2.617/js/kendo.all.min.js'></script>
+  <script src='/assets/console.js'></script>
+  <script
+          src='/out/kendoui-components.js'></script>
+</head>
+
+<body>
+  <div id="example">
+    <k-grid data-source='{
+                  type: "odata",
+                  transport: {
+                    read: "https://demos.telerik.com/kendo-ui/service/Northwind.svc/Orders"
+                  },
+                  schema: {
+                    model: {
+                      fields: {
+                        OrderID: { type: "number" },
+                        Freight: { type: "number" },
+                        ShipName: { type: "string" },
+                        OrderDate: { type: "date" },
+                        ShipCity: { type: "string" }
+                      }
+                    }
+                  },
+                  pageSize: 20,
+                  serverPaging: true,
+                  serverFiltering: true,
+                  serverSorting: true
+                }'
+            height='550'
+            filterable='true'
+            scrollable='true'
+            sortable='true'
+            pageable='true'
+            columns='[{
+                  field: "OrderID",
+                  filterable: false
+                },
+                  "Freight",
+                {
+                  field: "OrderDate",
+                  title: "Order Date",
+                  format: "{0:MM/dd/yyyy}"
+                }, {
+                  field: "ShipName",
+                  title: "Ship Name"
+                }, {
+                  field: "ShipCity",
+                  title: "Ship City"
+                }
+                ]'></k-grid>
+  </div>
+</body>
+
+</html>

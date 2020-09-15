@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang='en'>
+
+<head>
+  <meta charset='UTF-8'>
+  <meta name='viewport'
+        content='width=device-width, initial-scale=1.0'>
+  <meta http-equiv='X-UA-Compatible'
+        content='ie=edge'>
+  <title>Binding to OData v4 service</title>
+  <link rel='stylesheet'
+        href='http://kendo.cdn.telerik.com/2020.2.617/styles/kendo.common.min.css' />
+  <link rel='stylesheet'
+        href='http://kendo.cdn.telerik.com/2020.2.617/styles/kendo.default.min.css' />
+  <link rel='stylesheet'
+        href='http://kendo.cdn.telerik.com/2020.2.617/styles/kendo.mobile.all.min.css' />
+  <link rel='stylesheet'
+        href='/assets/examples.css' />
+  <script
+          src='http://kendo.cdn.telerik.com/2020.2.617/js/jquery.min.js'></script>
+  <script
+          src='http://kendo.cdn.telerik.com/2020.2.617/js/kendo.all.min.js'></script>
+  <script src='/assets/console.js'></script>
+  <script
+          src='/out/kendoui-components.js'></script>
+</head>
+
+<body>
+  <div id="example">
+    <k-tree-list data-source='{
+                      type: "odata-v4",
+                      transport: {
+                        read: {
+                          url: function (item) {
+                            if (item.hasOwnProperty("id")) {
+                              return "https://demos.telerik.com/kendo-ui/service-v4/odata/Employees(" + item.id + ")/Subordinates";
+                            } else {
+                              return "https://demos.telerik.com/kendo-ui/service-v4/odata/Employees/Default.TopEmployees()/";
+                            }
+                          }
+                        }
+                      },
+                      schema: {
+                        model: {
+                          id: "EmployeeID",
+                          parentId: "ReportsTo",
+                          fields: {
+                            ReportsTo: { field: "ReportsTo", nullable: true },
+                            EmployeeID: { field: "EmployeeID", type: "number" }
+                          }
+                        }
+                      }
+                    }'
+                 filterable=true
+                 sortable=true
+                 columns='[
+                    { field: "FirstName", title: "First Name", width: 280 },
+                    { field: "LastName", title: "Last Name", width: 160 },
+                    { field: "HomePhone", width: 200 },
+                    { field: "Extension", width: 140 },
+                    { field: "Address" }
+                  ]'></k-tree-list>
+  </div>
+</body>
+
+</html>

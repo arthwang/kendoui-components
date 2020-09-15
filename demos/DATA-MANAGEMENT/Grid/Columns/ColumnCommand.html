@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang='en'>
+
+<head>
+  <meta charset='UTF-8'>
+  <meta name='viewport'
+        content='width=device-width, initial-scale=1.0'>
+  <meta http-equiv='X-UA-Compatible'
+        content='ie=edge'>
+  <title>Column command demo</title>
+  <link rel='stylesheet'
+        href='http://kendo.cdn.telerik.com/2020.2.617/styles/kendo.common.min.css' />
+  <link rel='stylesheet'
+        href='http://kendo.cdn.telerik.com/2020.2.617/styles/kendo.default.min.css' />
+  <link rel='stylesheet'
+        href='http://kendo.cdn.telerik.com/2020.2.617/styles/kendo.mobile.all.min.css' />
+  <link rel='stylesheet'
+        href='/assets/examples.css' />
+  <script
+          src='http://kendo.cdn.telerik.com/2020.2.617/js/jquery.min.js'></script>
+  <script
+          src='http://kendo.cdn.telerik.com/2020.2.617/js/kendo.all.min.js'></script>
+  <script src='/assets/console.js'></script>
+  <script
+          src='/out/kendoui-components.js'></script>
+</head>
+
+<body>
+  <script
+          src="https://demos.telerik.com/kendo-ui/content/shared/js/people.js"></script>
+
+  <div id="example">
+    <k-grid id='grid'
+            data-source='{
+                  pageSize: 20,
+                  data: createRandomData(50)
+                }'
+            columns='[
+                  { field: "FirstName", title: "First Name", width: "140px" },
+                  { field: "LastName", title: "Last Name", width: "140px" },
+                  { field: "Title" },
+                  { command: { text: "View Details", click: showDetails }, title: " ", width: "180px" }]'
+            pageable=true
+            height=550></k-grid>
+
+    <k-window id='details'
+              title='Customer Details'
+              modal=true
+              visible=false
+              resizable=false
+              width=300></k-window>
+
+    <script>
+      var wnd,
+        detailsTemplate;
+
+      $(document).ready(function () {
+        var grid = $("#grid").data("kendoGrid");
+        wnd = $("#details").data("kendoWindow");
+        detailsTemplate = kendo.template($("#template").html());
+      });
+
+      function showDetails(e) {
+        e.preventDefault();
+
+        var dataItem = this.dataItem($(e.currentTarget).closest("tr"));
+        wnd.content(detailsTemplate(dataItem));
+        wnd.center().open();
+      }
+    </script>
+
+    <script type="text/x-kendo-template"
+            id="template">
+              <div id="details-container">
+                  <h2>#= FirstName # #= LastName #</h2>
+                  <em>#= Title #</em>
+                  <dl>
+                      <dt>City: #= City #</dt>
+                      <dt>Birth Date: #= kendo.toString(BirthDate, "MM/dd/yyyy") #</dt>
+                  </dl>
+              </div>
+          </script>
+
+    <style type="text/css">
+      #details-container {
+        padding: 10px;
+      }
+
+      #details-container h2 {
+        margin: 0;
+      }
+
+      #details-container em {
+        color: #8c8c8c;
+      }
+
+      #details-container dt {
+        margin: 0;
+        display: inline;
+      }
+    </style>
+  </div>
+</body>
+
+</html>

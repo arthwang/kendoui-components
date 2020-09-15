@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang='en'>
+
+<head>
+  <meta charset='UTF-8'>
+  <meta name='viewport'
+        content='width=device-width, initial-scale=1.0'>
+  <meta http-equiv='X-UA-Compatible'
+        content='ie=edge'>
+  <title>Row template demo</title>
+  <link rel='stylesheet'
+        href='http://kendo.cdn.telerik.com/2020.2.617/styles/kendo.common.min.css' />
+  <link rel='stylesheet'
+        href='http://kendo.cdn.telerik.com/2020.2.617/styles/kendo.default.min.css' />
+  <link rel='stylesheet'
+        href='http://kendo.cdn.telerik.com/2020.2.617/styles/kendo.mobile.all.min.css' />
+  <link rel='stylesheet'
+        href='/assets/examples.css' />
+  <script
+          src='http://kendo.cdn.telerik.com/2020.2.617/js/jquery.min.js'></script>
+  <script
+          src='http://kendo.cdn.telerik.com/2020.2.617/js/kendo.all.min.js'></script>
+  <script src='/assets/console.js'></script>
+  <script
+          src='/out/kendoui-components.js'></script>
+</head>
+
+<body>
+  <div id="example">
+    <k-grid id="grid"
+            data-source='{
+            type: "odata",
+            transport: {
+              read: {
+                url: "https://demos.telerik.com/kendo-ui/service/Northwind.svc/Employees",
+              }
+            }
+          }'
+            row-template='kendo.template($("#rowTemplate").html())'
+            alt-row-template='kendo.template($("#altRowTemplate").html())'
+            height=550>
+      <table>
+        <colgroup>
+          <col class="photo" />
+          <col class="details" />
+          <col />
+        </colgroup>
+        <thead>
+          <tr>
+            <th>
+              Picture
+            </th>
+            <th>
+              Details
+            </th>
+            <th>
+              Country
+            </th>
+            <th>
+              ID
+            </th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td colspan="3"></td>
+          </tr>
+        </tbody>
+      </table>
+    </k-grid>
+    <script id="rowTemplate"
+            type="text/x-kendo-tmpl">
+          	            <tr data-uid="#: uid #">
+          		            <td class="photo">
+                                 <img src="https://demos.telerik.com/kendo-ui/content/web/Employees/#:data.EmployeeID#.jpg" alt="#: data.EmployeeID #" />
+          		            </td>
+          		            <td class="details">
+          			           <span class="name">#: FirstName# #: LastName# </span>
+          			           <span class="title">Title: #: Title #</span>
+          		            </td>
+                              <td class="country">
+          			            #: Country #
+          		            </td>
+          		            <td class="employeeID">
+          		               #: EmployeeID #
+          		            </td>
+          	           </tr>
+                      </script>
+    <script id="altRowTemplate"
+            type="text/x-kendo-tmpl">
+          	            <tr class="k-alt" data-uid="#: uid #">
+          		            <td class="photo">
+                                 <img src="https://demos.telerik.com/kendo-ui/content/web/Employees/#:data.EmployeeID#.jpg" alt="#: data.EmployeeID #" />
+          		            </td>
+          		            <td class="details">
+          			           <span class="name">#: FirstName# #: LastName# </span>
+          			           <span class="title">Title: #: Title #</span>
+          		            </td>
+          		            <td class="country">
+          			            #: Country #
+          		            </td>
+                              <td class="employeeID">
+          		               #: EmployeeID #
+          		            </td>
+          	           </tr>
+                      </script>
+    <style>
+      .photo {
+        width: 140px;
+      }
+
+      .details {
+        width: 400px;
+      }
+
+      .name {
+        display: block;
+        font-size: 1.6em;
+      }
+
+      .title {
+        display: block;
+        padding-top: 1.6em;
+      }
+
+      .employeeID,
+      .country {
+        font-family: "Segoe UI", "Helvetica Neue", Arial, sans-serif;
+        font-size: 50px;
+        font-weight: bold;
+        color: #898989;
+      }
+
+      td.photo,
+      .employeeID {
+        text-align: center;
+      }
+
+      .k-grid-header .k-header {
+        padding: 10px 20px;
+      }
+
+      .k-grid td {
+        background: -moz-linear-gradient(top, rgba(0, 0, 0, 0.05) 0%, rgba(0, 0, 0, 0.15) 100%);
+        background: -webkit-gradient(linear, left top, left bottom, color-stop(0%, rgba(0, 0, 0, 0.05)), color-stop(100%, rgba(0, 0, 0, 0.15)));
+        background: -webkit-linear-gradient(top, rgba(0, 0, 0, 0.05) 0%, rgba(0, 0, 0, 0.15) 100%);
+        background: -o-linear-gradient(top, rgba(0, 0, 0, 0.05) 0%, rgba(0, 0, 0, 0.15) 100%);
+        background: -ms-linear-gradient(top, rgba(0, 0, 0, 0.05) 0%, rgba(0, 0, 0, 0.15) 100%);
+        background: linear-gradient(to bottom, rgba(0, 0, 0, 0.05) 0%, rgba(0, 0, 0, 0.15) 100%);
+        padding: 20px;
+      }
+
+      .k-grid .k-alt td {
+        background: -moz-linear-gradient(top, rgba(0, 0, 0, 0.2) 0%, rgba(0, 0, 0, 0.1) 100%);
+        background: -webkit-gradient(linear, left top, left bottom, color-stop(0%, rgba(0, 0, 0, 0.2)), color-stop(100%, rgba(0, 0, 0, 0.1)));
+        background: -webkit-linear-gradient(top, rgba(0, 0, 0, 0.2) 0%, rgba(0, 0, 0, 0.1) 100%);
+        background: -o-linear-gradient(top, rgba(0, 0, 0, 0.2) 0%, rgba(0, 0, 0, 0.1) 100%);
+        background: -ms-linear-gradient(top, rgba(0, 0, 0, 0.2) 0%, rgba(0, 0, 0, 0.1) 100%);
+        background: linear-gradient(to bottom, rgba(0, 0, 0, 0.2) 0%, rgba(0, 0, 0, 0.1) 100%);
+      }
+    </style>
+  </div>
+
+</body>
+
+</html>

@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang='en'>
+
+<head>
+  <meta charset='UTF-8'>
+  <meta name='viewport'
+        content='width=device-width, initial-scale=1.0'>
+  <meta http-equiv='X-UA-Compatible'
+        content='ie=edge'>
+  <title>Templates demo</title>
+  <link rel='stylesheet'
+        href='http://kendo.cdn.telerik.com/2020.2.617/styles/kendo.common.min.css' />
+  <link rel='stylesheet'
+        href='http://kendo.cdn.telerik.com/2020.2.617/styles/kendo.default.min.css' />
+  <link rel='stylesheet'
+        href='http://kendo.cdn.telerik.com/2020.2.617/styles/kendo.mobile.all.min.css' />
+  <link rel='stylesheet'
+        href='/assets/examples.css' />
+  <script
+          src='http://kendo.cdn.telerik.com/2020.2.617/js/jquery.min.js'></script>
+  <script
+          src='http://kendo.cdn.telerik.com/2020.2.617/js/kendo.all.min.js'></script>
+  <script src='/assets/console.js'></script>
+  <script
+          src='/out/kendoui-components.js'></script>
+</head>
+
+<body>
+  <div id="example">
+    <k-pivot-grid id="pivotgrid"
+                  class="hidden-on-narrow"
+                  data-cell-template=dataCellTemplate
+                  column-header-template=headerTemplate
+                  row-header-template=headerTemplate
+                  column-width=200
+                  height=320
+                  data-source='{
+                      type: "xmla",
+                      columns: [{ name: "[Date].[Calendar]", expand: true }],
+                      rows: [{ name: "[Product].[Product Line]", expand: true }],
+                      measures: ["[Measures].[Reseller Freight Cost]"],
+                      transport: {
+                        connection: {
+                          catalog: "Adventure Works DW 2008R2",
+                          cube: "Adventure Works"
+                        },
+                        read: "https://demos.telerik.com/olap/msmdpump.dll"
+                      },
+                      schema: {
+                        type: "xmla"
+                      },
+                      error: function (e) {
+                        alert("error: " + kendo.stringify(e.errors[0]));
+                      }
+                    }'></k-pivot-grid>
+
+    <div class="responsive-message"></div>
+
+    <script id="dataCellTemplate"
+            type="text/x-kendo-template">
+                        # var columnMember = columnTuple ? columnTuple.members[0] : { children: [] }; #
+                        # var rowMember = rowTuple ? rowTuple.members[0] : { children: [] }; #
+                        # var value = kendo.toString(kendo.parseFloat(dataItem.value) || "N/A", "c2"); #
+        
+                        # if (columnMember.children.length || rowMember.children.length) { #
+                            <em  style="color: red">#: value # (total)</em>
+                        # } else { #
+                            #: value #
+                        # } #
+    </script>
+
+    <script id="headerTemplate"
+            type="text/x-kendo-template">
+                        # if (!member.children.length) { #
+                            <em>#: member.caption #</em>
+                        # } else { #
+                            #: member.caption #
+                        # } #
+    </script>
+
+  </div>
+</body>
+
+</html>

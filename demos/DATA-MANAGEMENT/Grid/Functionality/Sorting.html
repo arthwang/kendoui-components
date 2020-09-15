@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang='en'>
+
+<head>
+  <meta charset='UTF-8'>
+  <meta name='viewport'
+        content='width=device-width, initial-scale=1.0'>
+  <meta http-equiv='X-UA-Compatible'
+        content='ie=edge'>
+  <title>Sorting demo</title>
+  <link rel='stylesheet'
+        href='http://kendo.cdn.telerik.com/2020.2.617/styles/kendo.common.min.css' />
+  <link rel='stylesheet'
+        href='http://kendo.cdn.telerik.com/2020.2.617/styles/kendo.default.min.css' />
+  <link rel='stylesheet'
+        href='http://kendo.cdn.telerik.com/2020.2.617/styles/kendo.mobile.all.min.css' />
+  <link rel='stylesheet'
+        href='/assets/examples.css' />
+  <script
+          src='http://kendo.cdn.telerik.com/2020.2.617/js/jquery.min.js'></script>
+  <script
+          src='http://kendo.cdn.telerik.com/2020.2.617/js/kendo.all.min.js'></script>
+  <script src='/assets/console.js'></script>
+  <script
+          src='/out/kendoui-components.js'></script>
+</head>
+
+<body>
+  <script
+          src="https://demos.telerik.com/kendo-ui/content/shared/js/orders.js"></script>
+
+  <div id="example">
+
+    <div class="demo-section k-content wide">
+      <h4>Grid with single column sorting enabled
+      </h4>
+      <k-grid data-source='{
+                  data: orders,
+                  pageSize: 6
+                }'
+              sortable='{mode:"single",allowUnsort:false}'
+              pageable='{buttonCount:5}'
+              scrollable=false
+              columns='[
+                  {
+                    field: "ShipCountry",
+                    title: "Ship Country",
+                    sortable: {
+                      initialDirection: "desc"
+                    },
+                    width: 300
+                  },
+                  {
+                    field: "Freight",
+                    width: 300
+                  },
+                  {
+                    field: "OrderDate",
+                    title: "Order Date",
+                    format: "{0:dd/MM/yyyy}"
+                  }
+                ]'></k-grid>
+    </div>
+
+    <div class="demo-section k-content wide">
+      <h4>Grid with multiple column sorting
+        enabled</h4>
+      <k-grid data-source='{
+                  data: orders,
+                  pageSize: 6
+                }'
+              sortable='{mode:"multiple",allowUnsort:true,showIndexes:true}'
+              pageable='{buttonCount:5}'
+              scrollable=false
+              columns='[
+                  {
+                    field: "ShipCountry",
+                    title: "Ship Country",
+                    width: 300
+                  },
+                  {
+                    field: "Freight",
+                    width: 300
+                  },
+                  {
+                    field: "OrderDate",
+                    title: "Order Date",
+                    format: "{0:d}"
+                  }
+                ]'></k-grid>
+    </div>
+    <style>
+      .demo-section h3 {
+        margin: 5px 0 15px 0;
+      }
+    </style>
+  </div>
+</body>
+
+</html>

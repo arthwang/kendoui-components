@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang='en'>
+
+<head>
+  <meta charset='UTF-8'>
+  <meta name='viewport'
+        content='width=device-width, initial-scale=1.0'>
+  <meta http-equiv='X-UA-Compatible'
+        content='ie=edge'>
+  <title>DataSource binding demo</title>
+  <link rel='stylesheet'
+        href='http://kendo.cdn.telerik.com/2020.2.617/styles/kendo.common.min.css' />
+  <link rel='stylesheet'
+        href='http://kendo.cdn.telerik.com/2020.2.617/styles/kendo.default.min.css' />
+  <link rel='stylesheet'
+        href='http://kendo.cdn.telerik.com/2020.2.617/styles/kendo.mobile.all.min.css' />
+  <link rel='stylesheet'
+        href='/assets/examples.css' />
+  <script
+          src='http://kendo.cdn.telerik.com/2020.2.617/js/jquery.min.js'></script>
+  <script
+          src='http://kendo.cdn.telerik.com/2020.2.617/js/kendo.all.min.js'></script>
+  <script src='/assets/console.js'></script>
+  <script
+          src='/out/kendoui-components.js'></script>
+</head>
+
+<body>
+  <div id="example">
+    <div class="box wide">
+      <div class="box-col">
+        <h4>Save data changes</h4>
+        <ul class="options">
+          <li>
+            <button class="k-button"
+                    id="save">Save
+              changes</button>
+            <button class="k-button"
+                    id="cancel">Cancel
+              changes</button>
+          </li>
+        </ul>
+      </div>
+    </div>
+    <k-spreadsheet id="spreadsheet"
+                   style="width: 100%"
+                   columns=20
+                   rows=100
+                   toolbar=false
+                   sheetsbar=false
+                   sheets></k-spreadsheet>
+    <script>
+      var crudServiceBaseUrl = "https://demos.telerik.com/kendo-ui/service";
+
+      var dataSource = new kendo.data.DataSource({
+        transport: {
+          read: onRead,
+          submit: onSubmit
+        },
+        batch: true,
+        change: function () {
+          $("#cancel, #save").toggleClass("k-state-disabled", !this.hasChanges());
+        },
+        schema: {
+          model: {
+            id: "ProductID",
+            fields: {
+              ProductID: { type: "number" },
+              ProductName: { type: "string" },
+              UnitPrice: { type: "number" },
+              Discontinued: { type: "boolean" },
+              UnitsInStock: { type: "number" }
+            }
+          }
+        }
+      });
+
+      var sheets = [{
+        name: "Products",
+        dataSource: dataSource,
+        rows: [{
+          height: 40,
+          cells: [
+            {
+              bold: "true",
+              background: "#9c27b0",
+              textAlign: "center",
+              color: "white"
+            }, {
+              bold: "true",
+              background: "#9c27b0",
+              textAlign: "center",
+              color: "white"
+            }, {
+              bold: "true",
+              background: "#9c27b0",
+              textAlign: "center",
+              color: "white"
+            }, {
+              bold: "true",
+              background: "#9c27b0",
+              textAlign: "center",
+              color: "white"
+            }, {
+              bold: "true",
+              background: "#9c27b0",
+              textAlign: "center",
+              color: "white"
+            }]
+        }],
+        columns: [
+          { width: 100 },
+          { width: 415 },
+          { width: 145 },
+          { width: 145 },
+          { width: 145 }
+        ]
+      }];
+
+      function onSubmit(e) {
+        $.ajax({
+          url: crudServiceBaseUrl + "/Products/Submit",
+          data: { models: kendo.stringify(e.data) },
+          contentType: "application/json",
+          dataType: "jsonp",
+          success: function (result) {
+            e.success(result.Updated, "update");
+            e.success(result.Created, "create");
+            e.success(result.Destroyed, "destroy");
+          },
+          error: function (xhr, httpStatusMessage, customErrorMessage) {
+            alert(xhr.responseText);
+          }
+        });
+      }
+
+      function onRead(options) {
+        $.ajax({
+          url: crudServiceBaseUrl + "/Products",
+          dataType: "jsonp",
+          success: function (result) {
+            options.success(result);
+          },
+          error: function (result) {
+            options.error(result);
+          }
+        });
+      }
+
+      $(function () {
+        $("#save").click(function () {
+          if (!$(this).hasClass("k-state-disabled")) {
+            dataSource.sync();
+          }
+        });
+
+        $("#cancel").click(function () {
+          if (!$(this).hasClass("k-state-disabled")) {
+            dataSource.cancelChanges();
+          }
+        });
+      });
+    </script>
+  </div>
+</body>
+
+</html>

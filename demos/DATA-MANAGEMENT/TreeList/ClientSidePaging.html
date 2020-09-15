@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang='en'>
+
+<head>
+  <meta charset='UTF-8'>
+  <meta name='viewport'
+        content='width=device-width, initial-scale=1.0'>
+  <meta http-equiv='X-UA-Compatible'
+        content='ie=edge'>
+  <title>Client-side paging demo</title>
+  <link rel='stylesheet'
+        href='http://kendo.cdn.telerik.com/2020.2.617/styles/kendo.common.min.css' />
+  <link rel='stylesheet'
+        href='http://kendo.cdn.telerik.com/2020.2.617/styles/kendo.default.min.css' />
+  <link rel='stylesheet'
+        href='http://kendo.cdn.telerik.com/2020.2.617/styles/kendo.mobile.all.min.css' />
+  <link rel='stylesheet'
+        href='/assets/examples.css' />
+  <script
+          src='http://kendo.cdn.telerik.com/2020.2.617/js/jquery.min.js'></script>
+  <script
+          src='http://kendo.cdn.telerik.com/2020.2.617/js/kendo.all.min.js'></script>
+  <script src='/assets/console.js'></script>
+  <script
+          src='/out/kendoui-components.js'></script>
+</head>
+
+<body>
+  <div id="example">
+    <k-tree-list height=540
+                 filterable=true
+                 sortable=true
+                 data-source='{
+                      transport: {
+                        read: {
+                          url: "https://demos.telerik.com/kendo-ui/service/EmployeeDirectory/All",
+                          dataType: "jsonp"
+                        }
+                      },
+                      schema: {
+                        model: {
+                          id: "EmployeeId",
+                          parentId: "ReportsTo",
+                          expanded: true,
+                          fields: {
+                            ReportsTo: { nullable: true },
+                            EmployeeId: { type: "number" },
+                            HireDate: { field: "HireDate", type: "date" }
+                          }
+                        }
+                      }
+                    }'
+                 columns='[
+                      {
+                        field: "FirstName", title: "Name",
+                        template: "#: FirstName # #: LastName #"
+                      },
+                      { field: "Position" },
+                      { field: "HireDate", title: "Hire Date", format: "{0:MMMM d, yyyy}" }
+                    ]'
+                 pageable='{pageSize:15,pageSizes:true}'>
+    </k-tree-list>
+  </div>
+</body>
+
+</html>

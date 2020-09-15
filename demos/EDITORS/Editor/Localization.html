@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang='en'>
+
+<head>
+  <meta charset='UTF-8'>
+  <meta name='viewport'
+        content='width=device-width, initial-scale=1.0'>
+  <meta http-equiv='X-UA-Compatible'
+        content='ie=edge'>
+  <title>Localization demo</title>
+  <link rel='stylesheet'
+        href='http://kendo.cdn.telerik.com/2020.2.617/styles/kendo.common.min.css' />
+  <link rel='stylesheet'
+        href='http://kendo.cdn.telerik.com/2020.2.617/styles/kendo.default.min.css' />
+  <link rel='stylesheet'
+        href='http://kendo.cdn.telerik.com/2020.2.617/styles/kendo.mobile.all.min.css' />
+  <link rel='stylesheet'
+        href='/assets/examples.css' />
+  <script
+          src='http://kendo.cdn.telerik.com/2020.2.617/js/jquery.min.js'></script>
+  <script
+          src='http://kendo.cdn.telerik.com/2020.2.617/js/kendo.all.min.js'></script>
+  <script src='/assets/console.js'></script>
+  <script
+          src='/out/kendoui-components.js'></script>
+</head>
+
+<body>
+  <div id="example">
+    <div class="box wide">
+      <label for="language">Choose
+        language:</label>
+      <k-drop-down-list id="language"
+                        value="en-US"
+                        change='changeLanguage'
+                        data-text-field='text'
+                        data-value-field='value'
+                        data-source='[
+                            { text: "bg-BG" },
+                            { text: "zh-CN" },
+                            { text: "en-US" },
+                          ]'></k-drop-down-list>
+    </div>
+
+    <script>
+      function changeLanguage() {
+        kendo.ui.progress($("#editor"), true);
+        var baseUrl = 'https://kendo.cdn.telerik.com/2018.3.1017/js/messages/kendo.messages.';
+        $.getScript(baseUrl + this.value() + ".min.js", function () {
+          kendo.ui.progress($("#editor"), false);
+          createEditor();
+        });
+      }
+
+      $(document).ready(function () {
+        $("#language").data("kendoDropDownList").trigger("change");
+      });
+
+      function createEditor() {
+        if ($('#editor').length > 0) {
+          $('#editor').data('kendoEditor').wrapper.remove();
+        }
+        $(`<k-editor id="editor"
+              rows="10"
+              cols="30"
+              style="width:100%;height:400px"
+              encoded=false 
+              tools></k-editor>`).appendTo('#example');
+      }
+      var tools = [
+        "bold",
+        "italic",
+        "underline",
+        "strikethrough",
+        "justifyLeft",
+        "justifyCenter",
+        "justifyRight",
+        "justifyFull",
+        "insertUnorderedList",
+        "insertOrderedList",
+        "indent",
+        "outdent",
+        "createLink",
+        "unlink",
+        "insertImage",
+        "insertFile",
+        "subscript",
+        "superscript",
+        "createTable",
+        "addRowAbove",
+        "addRowBelow",
+        "addColumnLeft",
+        "addColumnRight",
+        "deleteRow",
+        "deleteColumn",
+        "viewHtml",
+        "formatting",
+        "cleanFormatting",
+        "fontName",
+        "fontSize",
+        "foreColor",
+        "backColor"
+      ];
+
+    </script>
+  </div>
+</body>
+
+</html>

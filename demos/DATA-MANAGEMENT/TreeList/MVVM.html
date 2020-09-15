@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang='en'>
+
+<head>
+  <meta charset='UTF-8'>
+  <meta name='viewport'
+        content='width=device-width, initial-scale=1.0'>
+  <meta http-equiv='X-UA-Compatible'
+        content='ie=edge'>
+  <title>MVVM demo</title>
+  <link rel='stylesheet'
+        href='http://kendo.cdn.telerik.com/2020.2.617/styles/kendo.common.min.css' />
+  <link rel='stylesheet'
+        href='http://kendo.cdn.telerik.com/2020.2.617/styles/kendo.default.min.css' />
+  <link rel='stylesheet'
+        href='http://kendo.cdn.telerik.com/2020.2.617/styles/kendo.mobile.all.min.css' />
+  <link rel='stylesheet'
+        href='/assets/examples.css' />
+  <script
+          src='http://kendo.cdn.telerik.com/2020.2.617/js/jquery.min.js'></script>
+  <script
+          src='http://kendo.cdn.telerik.com/2020.2.617/js/kendo.all.min.js'></script>
+  <script src='/assets/console.js'></script>
+  <script
+          src='/out/kendoui-components.js'></script>
+</head>
+
+<body>
+  <div id="example">
+    <div class="demo-section k-content wide">
+      <div>
+        <h4>Select a record</h4>
+        <k-tree-list selectable="true"
+                     columns="[
+                            { 'field': 'Name' },
+                            { 'field': 'Position', 'width': 270 },
+                        ]"
+                     data-bind="source: employees,
+                        visible: isVisible,
+                        events: {
+                          change: onChange
+                      }"
+                     style="height: 300px">
+        </k-tree-list>
+      </div>
+      <div style="padding-top: 2em;">
+        <h4>Console</h4>
+        <div class="console"></div>
+      </div>
+    </div>
+    <div class="box wide">
+      <div class="box-col">
+        <h4>Configuration</h4>
+        <div>
+          <label><input type="checkbox"
+                   data-bind="checked: isVisible">Visible</label>
+        </div>
+      </div>
+      <div class="box-col">
+        <h4>Information</h4>
+        Kendo UI TreeList supports the
+        <a
+           href="http://docs.telerik.com/kendo-ui/getting-started/framework/mvvm/bindings/events">events</a>,
+        <a
+           href="http://docs.telerik.com/kendo-ui/getting-started/framework/mvvm/bindings/source">source</a>
+        and
+        <a
+           href="http://docs.telerik.com/kendo-ui/getting-started/framework/mvvm/bindings/visible">visible</a>
+        bindings.
+      </div>
+    </div>
+    <script>
+      var viewModel = kendo.observable({
+        isVisible: true,
+        onChange: function (e) {
+          var widget = e.sender;
+          var dataItem = widget.dataItem(widget.select());
+          kendoConsole.log("event :: change(" + kendo.stringify(dataItem, null, 4) + ")");
+        },
+        employees: new kendo.data.TreeListDataSource({
+          data: [
+            { EmployeeID: 1, ReportsTo: null, Name: "Andrew Fuller", Position: "CEO" },
+            { EmployeeID: 2, ReportsTo: 1, Name: "Andrew Hopkins", Position: "Sales" },
+            { EmployeeID: 3, ReportsTo: 1, Name: "Betty Stewart", Position: "Legal advisor" },
+            { EmployeeID: 4, ReportsTo: 1, Name: "Jon Michaels", Position: "Product team lead" },
+            { EmployeeID: 5, ReportsTo: 1, Name: "Rebecca Williams", Position: "Software developer" },
+            { EmployeeID: 6, ReportsTo: 4, Name: "John Smith", Position: "Marketing associate" },
+            { EmployeeID: 7, ReportsTo: 4, Name: "Natasha Andrews", Position: "System administrator" },
+            { EmployeeID: 8, ReportsTo: 4, Name: "Victoria Belmont", Position: "Designer" },
+            { EmployeeID: 9, ReportsTo: 4, Name: "Emma Watkins", Position: "Software developer" }
+          ],
+          schema: {
+            model: {
+              id: "EmployeeID",
+              parentId: "ReportsTo",
+              fields: {
+                EmployeeId: { type: "number", editable: false, nullable: false },
+                ReportsTo: { nullable: true, type: "number" },
+                Name: { field: "Name", type: "string" },
+                Position: { field: "Position", type: "string" }
+              }
+            }
+          }
+        })
+      });
+      $(function () {
+        kendo.bind($("#example"), viewModel);
+      });
+    </script>
+  </div>
+</body>
+
+</html>

@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang='en'>
+
+<head>
+  <meta charset='UTF-8'>
+  <meta name='viewport'
+        content='width=device-width, initial-scale=1.0'>
+  <meta http-equiv='X-UA-Compatible'
+        content='ie=edge'>
+  <title>Aggregates demo</title>
+  <link rel='stylesheet'
+        href='http://kendo.cdn.telerik.com/2020.2.617/styles/kendo.common.min.css' />
+  <link rel='stylesheet'
+        href='http://kendo.cdn.telerik.com/2020.2.617/styles/kendo.default.min.css' />
+  <link rel='stylesheet'
+        href='http://kendo.cdn.telerik.com/2020.2.617/styles/kendo.mobile.all.min.css' />
+  <link rel='stylesheet'
+        href='/assets/examples.css' />
+  <script
+          src='http://kendo.cdn.telerik.com/2020.2.617/js/jquery.min.js'></script>
+  <script
+          src='http://kendo.cdn.telerik.com/2020.2.617/js/kendo.all.min.js'></script>
+  <script src='/assets/console.js'></script>
+  <script
+          src='/out/kendoui-components.js'></script>
+</head>
+
+<body>
+  <div id="example">
+    <k-grid data-source
+            sortable=true
+            scrollable=false
+            pageable=true
+            columns></k-grid>
+  </div>
+  <script>
+    var dataSource = {
+      type: "odata",
+      transport: {
+        read: "https://demos.telerik.com/kendo-ui/service/Northwind.svc/Products"
+      },
+      schema: {
+        model: {
+          fields: {
+            UnitsInStock: { type: "number" },
+            ProductName: { type: "string" },
+            UnitPrice: { type: "number" },
+            UnitsOnOrder: { type: "number" },
+            UnitsInStock: { type: "number" }
+          }
+        }
+      },
+      pageSize: 7,
+      group: {
+        field: "UnitsInStock", aggregates: [
+          { field: "ProductName", aggregate: "count" },
+          { field: "UnitPrice", aggregate: "sum" },
+          { field: "UnitsOnOrder", aggregate: "average" },
+          { field: "UnitsInStock", aggregate: "count" }
+        ]
+      },
+
+      aggregate: [{ field: "ProductName", aggregate: "count" },
+      { field: "UnitPrice", aggregate: "sum" },
+      { field: "UnitsOnOrder", aggregate: "average" },
+      { field: "UnitsInStock", aggregate: "min" },
+      { field: "UnitsInStock", aggregate: "max" }]
+    },
+      coloumns = [
+        { field: "ProductName", title: "Product Name", aggregates: ["count"], footerTemplate: "Total Count: #=count#", groupFooterTemplate: "Count: #=count#" },
+        { field: "UnitPrice", title: "Unit Price", aggregates: ["sum"], groupHeaderColumnTemplate: "Sum: #=sum#" },
+        {
+          field: "UnitsOnOrder", title: "Units On Order", aggregates: ["average"], footerTemplate: "Average: #=average#",
+          groupFooterTemplate: "Average: #=average#"
+        },
+        {
+          field: "UnitsInStock", title: "Units In Stock", aggregates: ["min", "max", "count"], footerTemplate: "<div>Min: #= min #</div><div>Max: #= max #</div>",
+          groupHeaderTemplate: "Units In Stock: #= value # (Count: #= count#)"
+        }
+      ];
+  </script>
+</body>
+
+</html>

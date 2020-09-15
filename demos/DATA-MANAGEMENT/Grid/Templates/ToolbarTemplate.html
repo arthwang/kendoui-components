@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang='en'>
+
+<head>
+  <meta charset='UTF-8'>
+  <meta name='viewport'
+        content='width=device-width, initial-scale=1.0'>
+  <meta http-equiv='X-UA-Compatible'
+        content='ie=edge'>
+  <title>Toolbar template demo</title>
+  <link rel='stylesheet'
+        href='http://kendo.cdn.telerik.com/2020.2.617/styles/kendo.common.min.css' />
+  <link rel='stylesheet'
+        href='http://kendo.cdn.telerik.com/2020.2.617/styles/kendo.default.min.css' />
+  <link rel='stylesheet'
+        href='http://kendo.cdn.telerik.com/2020.2.617/styles/kendo.mobile.all.min.css' />
+  <link rel='stylesheet'
+        href='/assets/examples.css' />
+  <script
+          src='http://kendo.cdn.telerik.com/2020.2.617/js/jquery.min.js'></script>
+  <script
+          src='http://kendo.cdn.telerik.com/2020.2.617/js/kendo.all.min.js'></script>
+  <script src='/assets/console.js'></script>
+  <script
+          src='/out/kendoui-components.js'></script>
+</head>
+
+<body>
+  <div id="example">
+    <k-grid id="grid"
+            data-source='{
+                  type: "odata",
+                  transport: {
+                    read: "https://demos.telerik.com/kendo-ui/service/Northwind.svc/Products"
+                  }
+                }'
+            toolbar='kendo.template($("#template").html())'
+            height=550
+            sortable=true
+            columns='[
+                  { field: "ProductID", title: "Product ID", width: 100 },
+                  { field: "ProductName", title: "Product Name" },
+                  { field: "UnitPrice", title: "Unit Price", width: 150 },
+                  { field: "QuantityPerUnit", title: "Quantity Per Unit" }
+                ]'></k-grid>
+
+    <script type="text/x-kendo-template"
+            id="template">
+                        <div class="refreshBtnContainer">
+                            <a href="\\#" class="k-pager-refresh k-link k-button k-button-icon" title="Refresh"><span class="k-icon k-i-reload"></span></a>
+                        </div>
+                        <div class="toolbar">
+                            <label class="category-label" for="category">Show products by category:</label>
+                            <k-drop-down-list id="category" 
+                                              style="width: 150px" 
+                                              data-text-field='CategoryName' 
+                                              data-value-field='CategoryID' 
+                                              auto-bind=false 
+                                              option-label='All' 
+                                              data-source='{
+                                                  type: "odata",
+                                                  severFiltering: true,
+                                                  transport: {
+                                                    read: "https://demos.telerik.com/kendo-ui/service/Northwind.svc/Categories"
+                                                  }
+                                                }' 
+                                              change='function () {
+                                                var value = this.value();
+                                                if (value) {
+                                                  grid.data("kendoGrid").dataSource.filter({ field: "CategoryID", operator: "eq", value: parseInt(value) });
+                                                } else {
+                                                  grid.data("kendoGrid").dataSource.filter({});
+                                                }
+                                              }'></k-drop-down-list>
+                        </div>
+                    </script>
+    <script>
+      var grid;
+      $(function () {
+        grid = $('#grid');
+        grid.find(".k-grid-toolbar").on("click", ".k-pager-refresh", function (e) {
+          e.preventDefault();
+          grid.data("kendoGrid").dataSource.read();
+        });
+      });
+    </script>
+    <style>
+      #grid .k-grid-toolbar {
+        padding: .6em 1.3em .6em .4em;
+      }
+
+      .category-label {
+        vertical-align: middle;
+        padding-right: .5em;
+      }
+
+      #category {
+        vertical-align: middle;
+      }
+
+      .refreshBtnContainer {
+        display: inline-block;
+      }
+
+      .toolbar {
+        float: right;
+      }
+    </style>
+  </div </body>
+
+</html>

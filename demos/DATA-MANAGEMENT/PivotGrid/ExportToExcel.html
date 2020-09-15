@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang='en'>
+
+<head>
+  <meta charset='UTF-8'>
+  <meta name='viewport'
+        content='width=device-width, initial-scale=1.0'>
+  <meta http-equiv='X-UA-Compatible'
+        content='ie=edge'>
+  <title>Export to Excel demo</title>
+  <link rel='stylesheet'
+        href='http://kendo.cdn.telerik.com/2020.2.617/styles/kendo.common.min.css' />
+  <link rel='stylesheet'
+        href='http://kendo.cdn.telerik.com/2020.2.617/styles/kendo.default.min.css' />
+  <link rel='stylesheet'
+        href='http://kendo.cdn.telerik.com/2020.2.617/styles/kendo.mobile.all.min.css' />
+  <link rel='stylesheet'
+        href='/assets/examples.css' />
+  <script
+          src='http://kendo.cdn.telerik.com/2020.2.617/js/jquery.min.js'></script>
+  <script
+          src='http://kendo.cdn.telerik.com/2020.2.617/js/kendo.all.min.js'></script>
+  <script
+          src='http://kendo.cdn.telerik.com/2020.2.617/js/jszip.min.js'></script>
+  <script src='/assets/console.js'></script>
+  <script
+          src='/out/kendoui-components.js'></script>
+</head>
+
+<body>
+  <div id="example">
+    <button id="export"
+            class="k-button k-button-icontext hidden-on-narrow"><span
+            class="k-icon k-i-excel"></span>Export
+      to Excel</button>
+    <k-pivot-grid id="pivotgrid"
+                  class="hidden-on-narrow"
+                  excel='{
+                      fileName: "Kendo UI PivotGrid Export.xlsx",
+                      proxyURL: "https://demos.telerik.com/kendo-ui/service/export",
+                      filterable: true
+                    }'
+                  filterable=true
+                  sortable=true
+                  column-width=200
+                  height=580
+                  data-source='{
+                    type: "xmla",
+                    columns: [{ name: "[Date].[Calendar]", expand: true }, { name: "[Product].[Category]" }],
+                    rows: [{ name: "[Geography].[City]" }],
+                    measures: ["[Measures].[Reseller Freight Cost]"],
+                    transport: {
+                      connection: {
+                        catalog: "Adventure Works DW 2008R2",
+                        cube: "Adventure Works"
+                      },
+                      read: "https://demos.telerik.com/olap/msmdpump.dll"
+                    },
+                    schema: {
+                      type: "xmla"
+                    },
+                    error: function (e) {
+                      alert("error: " + kendo.stringify(e.errors[0]));
+                    }
+                  }'></k-pivot-grid>
+
+    <div class="responsive-message"></div>
+    <script>
+      $(function () {
+        var pivotgrid = $('#pivotgrid').data('kendoPivotGrid');
+        $('#export').click(function () {
+          pivotgrid.saveAsExcel();
+        });
+      });
+    </script>
+    <style>
+      #export {
+        margin: 0 0 10px 1px;
+      }
+    </style>
+  </div>
+</body>
+
+</html>

@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang='en'>
+
+<head>
+  <meta charset='UTF-8'>
+  <meta name='viewport'
+        content='width=device-width, initial-scale=1.0'>
+  <meta http-equiv='X-UA-Compatible'
+        content='ie=edge'>
+  <title>Column resizing demo</title>
+  <link rel='stylesheet'
+        href='http://kendo.cdn.telerik.com/2020.2.617/styles/kendo.common.min.css' />
+  <link rel='stylesheet'
+        href='http://kendo.cdn.telerik.com/2020.2.617/styles/kendo.default.min.css' />
+  <link rel='stylesheet'
+        href='http://kendo.cdn.telerik.com/2020.2.617/styles/kendo.mobile.all.min.css' />
+  <link rel='stylesheet'
+        href='/assets/examples.css' />
+  <script
+          src='http://kendo.cdn.telerik.com/2020.2.617/js/jquery.min.js'></script>
+  <script
+          src='http://kendo.cdn.telerik.com/2020.2.617/js/kendo.all.min.js'></script>
+  <script src='/assets/console.js'></script>
+  <script
+          src='/out/kendoui-components.js'></script>
+</head>
+
+<body>
+  <div id="example">
+    <k-tree-list data-source='{
+                      transport: {
+                        read: {
+                          url: "https://demos.telerik.com/kendo-ui/service/EmployeeDirectory/All",
+                          dataType: "jsonp"
+                        }
+                      },
+                      schema: {
+                        model: {
+                          id: "EmployeeId",
+                          expanded: true,
+                          parentId: "ReportsTo",
+                          fields: {
+                            EmployeeId: { type: "number", nullable: false },
+                            ReportsTo: { nullable: true, type: "number" }
+                          }
+                        }
+                      }
+                    }'
+                 columns='[
+                      { field: "FirstName", expandable: true, title: "First Name", width: 250 },
+                      { field: "LastName", title: "Last Name" },
+                      { field: "Position" },
+                      { field: "Extension", title: "Ext", format: "{0:#}" }
+                    ]'
+                 resizable=true
+                 height=300></k-tree-list>
+  </div>
+</body>
+
+</html>

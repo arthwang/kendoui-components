@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang='en'>
+
+<head>
+  <meta charset='UTF-8'>
+  <meta name='viewport'
+        content='width=device-width, initial-scale=1.0'>
+  <meta http-equiv='X-UA-Compatible'
+        content='ie=edge'>
+  <title>Export PDF</title>
+  <link rel='stylesheet'
+        href='http://kendo.cdn.telerik.com/2020.2.617/styles/kendo.common.min.css' />
+  <link rel='stylesheet'
+        href='http://kendo.cdn.telerik.com/2020.2.617/styles/kendo.default.min.css' />
+  <link rel='stylesheet'
+        href='http://kendo.cdn.telerik.com/2020.2.617/styles/kendo.mobile.all.min.css' />
+  <link rel='stylesheet'
+        href='/assets/examples.css' />
+  <script
+          src='http://kendo.cdn.telerik.com/2020.2.617/js/jquery.min.js'></script>
+  <script
+          src='http://kendo.cdn.telerik.com/2020.2.617/js/kendo.all.min.js'></script>
+  <script
+          src='http://kendo.cdn.telerik.com/2020.2.617/js/jszip.min.js'></script>
+  <script src='/assets/console.js'></script>
+  <script
+          src='/out/kendoui-components.js'></script>
+</head>
+
+<body>
+  <div id="example">
+    <k-tree-list toolbar='["pdf"]'
+                 pdf='{
+                      fileName: "Kendo UI TreeList Export.pdf",
+                      proxyURL: "https://demos.telerik.com/kendo-ui/service/export",
+                    }'
+                 height=300
+                 filterable=true
+                 sortable=true
+                 data-source='{
+                      transport: {
+                        read: {
+                          url: "https://demos.telerik.com/kendo-ui/service/EmployeeDirectory/All",
+                          dataType: "jsonp"
+                        }
+                      },
+                      schema: {
+                        model: {
+                          id: "EmployeeId",
+                          parentId: "ReportsTo",
+                          fields: {
+                            ReportsTo: { nullable: true },
+                            EmployeeId: { type: "number" }
+                          },
+                          expanded: true
+                        }
+                      }
+                    }'
+                 columns='[
+                      { field: "FirstName", title: "First Name", width: 250 },
+                      { field: "LastName", title: "Last Name" },
+                      { field: "Position" },
+                      { field: "Extension" }
+                    ]'>
+    </k-tree-list>
+  </div>
+
+  <style>
+    /*
+        Use the DejaVu Sans font for display and embedding in the PDF file.
+        The standard PDF fonts have no support for Unicode characters.
+    */
+    .k-treelist {
+      font-family: "DejaVu Sans", "Arial", sans-serif;
+      font-size: .9em;
+    }
+  </style>
+
+  <script>
+    // Import DejaVu Sans font for embedding
+
+    // NOTE: Only required if the Kendo UI stylesheets are loaded
+    // from a different origin, e.g. cdn.kendostatic.com
+    kendo.pdf.defineFont({
+      "DejaVu Sans": "https://kendo.cdn.telerik.com/2016.2.607/styles/fonts/DejaVu/DejaVuSans.ttf",
+      "DejaVu Sans|Bold": "https://kendo.cdn.telerik.com/2016.2.607/styles/fonts/DejaVu/DejaVuSans-Bold.ttf",
+      "DejaVu Sans|Bold|Italic": "https://kendo.cdn.telerik.com/2016.2.607/styles/fonts/DejaVu/DejaVuSans-Oblique.ttf",
+      "DejaVu Sans|Italic": "https://kendo.cdn.telerik.com/2016.2.607/styles/fonts/DejaVu/DejaVuSans-Oblique.ttf",
+      "WebComponentsIcons": "https://kendo.cdn.telerik.com/2017.1.223/styles/fonts/glyphs/WebComponentsIcons.ttf"
+    });
+  </script>
+
+  <!-- Load Pako ZLIB library to enable PDF compression -->
+  <script
+          src="https://demos.telerik.com/kendo-ui/content/shared/js/pako.min.js"></script>
+
+</body>
+
+</html>

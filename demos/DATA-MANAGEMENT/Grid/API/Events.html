@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang='en'>
+
+<head>
+  <meta charset='UTF-8'>
+  <meta name='viewport'
+        content='width=device-width, initial-scale=1.0'>
+  <meta http-equiv='X-UA-Compatible'
+        content='ie=edge'>
+  <title>Events demo</title>
+  <link rel='stylesheet'
+        href='http://kendo.cdn.telerik.com/2020.2.617/styles/kendo.common.min.css' />
+  <link rel='stylesheet'
+        href='http://kendo.cdn.telerik.com/2020.2.617/styles/kendo.default.min.css' />
+  <link rel='stylesheet'
+        href='http://kendo.cdn.telerik.com/2020.2.617/styles/kendo.mobile.all.min.css' />
+  <link rel='stylesheet'
+        href='/assets/examples.css' />
+  <script
+          src='http://kendo.cdn.telerik.com/2020.2.617/js/jquery.min.js'></script>
+  <script
+          src='http://kendo.cdn.telerik.com/2020.2.617/js/kendo.all.min.js'></script>
+  <script src='/assets/console.js'></script>
+  <script
+          src='/out/kendoui-components.js'></script>
+</head>
+
+<body>
+  <div id="example">
+
+    <k-grid data-source='{
+                  transport: {
+                    read: {
+                      url: "https://demos.telerik.com/kendo-ui/service/Products",
+                      dataType: "jsonp"
+                    }
+                  },
+                  pageSize: 20
+                }'
+            change='function (arg) {
+              var selected = $.map(this.select(), function (item) {
+                return $(item).text();
+              });
+              kendoConsole.log("Selected: " + selected.length + " item(s), [" + selected.join(", ") + "]");
+            }'
+            data-bound='function (arg) {
+              kendoConsole.log("Grid data bound");
+            }'
+            data-binding='function (arg) {
+              kendoConsole.log("Grid data binding");
+            }'
+            sort='function (arg) {
+              kendoConsole.log("Sorting on field: " + arg.sort.field + ", direction:" + (arg.sort.dir || "none"));
+            }'
+            filter='function (arg) {
+              kendoConsole.log("Filter on " + kendo.stringify(arg.filter));
+            }'
+            page='function (arg) {
+              kendoConsole.log("Paging to page index:" + arg.page);
+            }'
+            group='function (arg) {
+              kendoConsole.log("Group on " + kendo.stringify(arg.groups));
+            }'
+            group-expand='function (arg) {
+              kendoConsole.log("The group to be expanded: " + kendo.stringify(arg.group));
+            }'
+            group-collapse='function onGroupCollapse(arg) {
+              kendoConsole.log("The group to be collapsed: " + kendo.stringify(arg.group));
+            }'
+            height=350
+            pageable=true
+            sortable=true
+            groupable=true
+            selectable='multiple cell'
+            columns='[
+                  {
+                    field: "ProductName",
+                    title: "Product Name"
+                  },
+                  {
+                    field: "UnitPrice",
+                    title: "Unit Price",
+                    format: "{0:c}"
+                  },
+                  {
+                    field: "UnitsInStock",
+                    title: "Units In Stock"
+                  }
+                ]'>
+    </k-grid>
+    <div class="box wide">
+      <h4>Console log</h4>
+      <div class="console"></div>
+    </div>
+  </div>
+  <style>
+    div.console div {
+      height: auto;
+    }
+  </style>
+</body>
+
+</html>

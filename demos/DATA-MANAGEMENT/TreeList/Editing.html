@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang='en'>
+
+<head>
+  <meta charset='UTF-8'>
+  <meta name='viewport'
+        content='width=device-width, initial-scale=1.0'>
+  <meta http-equiv='X-UA-Compatible'
+        content='ie=edge'>
+  <title>Editing demo</title>
+  <link rel='stylesheet'
+        href='http://kendo.cdn.telerik.com/2020.2.617/styles/kendo.common.min.css' />
+  <link rel='stylesheet'
+        href='http://kendo.cdn.telerik.com/2020.2.617/styles/kendo.default.min.css' />
+  <link rel='stylesheet'
+        href='http://kendo.cdn.telerik.com/2020.2.617/styles/kendo.mobile.all.min.css' />
+  <link rel='stylesheet'
+        href='/assets/examples.css' />
+  <script
+          src='http://kendo.cdn.telerik.com/2020.2.617/js/jquery.min.js'></script>
+  <script
+          src='http://kendo.cdn.telerik.com/2020.2.617/js/kendo.all.min.js'></script>
+  <script src='/assets/console.js'></script>
+  <script
+          src='/out/kendoui-components.js'></script>
+</head>
+
+<body>
+  <div id="example">
+    <k-tree-list data-source
+                 toolbar='["create"]'
+                 editable=true
+                 height=540
+                 columns></k-tree-list>
+
+    <script>
+      var crudServiceBaseUrl = "https://demos.telerik.com/kendo-ui/service";
+
+      var dataSource = new kendo.data.TreeListDataSource({
+        transport: {
+          read: {
+            url: crudServiceBaseUrl + "/EmployeeDirectory/All",
+            dataType: "jsonp"
+          },
+          update: {
+            url: crudServiceBaseUrl + "/EmployeeDirectory/Update",
+            dataType: "jsonp"
+          },
+          destroy: {
+            url: crudServiceBaseUrl + "/EmployeeDirectory/Destroy",
+            dataType: "jsonp"
+          },
+          create: {
+            url: crudServiceBaseUrl + "/EmployeeDirectory/Create",
+            dataType: "jsonp"
+          },
+          parameterMap: function (options, operation) {
+            if (operation !== "read" && options.models) {
+              return { models: kendo.stringify(options.models) };
+            }
+          }
+        },
+        batch: true,
+        schema: {
+          model: {
+            id: "EmployeeId",
+            parentId: "ReportsTo",
+            fields: {
+              EmployeeId: { type: "number", editable: false, nullable: false },
+              ReportsTo: { nullable: true, type: "number" },
+              FirstName: { validation: { required: true } },
+              LastName: { validation: { required: true } },
+              HireDate: { type: "date" },
+              Phone: { type: "string" },
+              HireDate: { type: "date" },
+              BirthDate: { type: "date" },
+              Extension: { type: "number", validation: { min: 0, required: true } },
+              Position: { type: "string" }
+            },
+            expanded: true
+          }
+        }
+      }),
+        columns = [
+          { field: "FirstName", expandable: true, title: "First Name", width: 220 },
+          { field: "LastName", title: "Last Name", width: 100 },
+          { field: "Position" },
+          { field: "HireDate", title: "Hire Date", format: "{0:MMMM d, yyyy}" },
+          { field: "Phone", title: "Phone" },
+          { field: "Extension", title: "Ext", format: "{0:#}" },
+          { command: [{ name: "createchild", text: "Add child" }, "edit", "destroy"], width: 300 }
+        ];
+    </script>
+  </div>
+
+  <style>
+    .k-treelist .k-command-cell .k-button {
+      min-width: 0px;
+      padding: 10px 10px 10px 10px;
+    }
+  </style>
+</body>
+
+</html>

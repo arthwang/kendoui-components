@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang='en'>
+
+<head>
+  <meta charset='UTF-8'>
+  <meta name='viewport'
+        content='width=device-width, initial-scale=1.0'>
+  <meta http-equiv='X-UA-Compatible'
+        content='ie=edge'>
+  <title>Filter menu customization</title>
+  <link rel='stylesheet'
+        href='http://kendo.cdn.telerik.com/2020.2.617/styles/kendo.common.min.css' />
+  <link rel='stylesheet'
+        href='http://kendo.cdn.telerik.com/2020.2.617/styles/kendo.default.min.css' />
+  <link rel='stylesheet'
+        href='http://kendo.cdn.telerik.com/2020.2.617/styles/kendo.mobile.all.min.css' />
+  <link rel='stylesheet'
+        href='/assets/examples.css' />
+  <script
+          src='http://kendo.cdn.telerik.com/2020.2.617/js/jquery.min.js'></script>
+  <script
+          src='http://kendo.cdn.telerik.com/2020.2.617/js/kendo.all.min.js'></script>
+  <script src='/assets/console.js'></script>
+  <script
+          src='/out/kendoui-components.js'></script>
+</head>
+
+<body>
+  <script
+          src="https://demos.telerik.com/kendo-ui/content/shared/js/people.js"></script>
+
+  <div id="example">
+    <k-grid data-source='{
+                  data: createRandomData(50),
+                  schema: {
+                    model: {
+                      fields: {
+                        City: { type: "string" },
+                        Title: { type: "string" },
+                        BirthDate: { type: "date" }
+                      }
+                    }
+                  },
+                  pageSize: 15
+                }'
+            height=550
+            scrollable=true
+            filterable='{
+                  extra: false,
+                  operators: {
+                    string: {
+                      startswith: "Starts with",
+                      eq: "Is equal to",
+                      neq: "Is not equal to"
+                    }
+                  }
+                }'
+            pageable=true
+            columns='[
+                  {
+                    title: "Name",
+                    width: 160,
+                    filterable: false,
+                    template: "#=FirstName# #=LastName#"
+                  },
+                  {
+                    field: "City",
+                    width: 130,
+                    filterable: {
+                      ui: cityFilter
+                    }
+                  },
+                  {
+                    field: "Title",
+                    filterable: {
+                      ui: titleFilter
+                    }
+                  },
+                  {
+                    field: "BirthDate",
+                    title: "Birth Date",
+                    format: "{0:MM/dd/yyyy HH:mm tt}",
+                    filterable: {
+                      ui: "datetimepicker"
+                    }
+                  }
+                ]'></k-grid>
+
+    <script>
+      function titleFilter(element) {
+        element.kendoAutoComplete({
+          dataSource: titles
+        });
+      }
+
+      function cityFilter(element) {
+        element.kendoDropDownList({
+          dataSource: cities,
+          optionLabel: "--Select Value--"
+        });
+      }
+
+    </script>
+  </div>
+</body>
+
+</html>

@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang='en'>
+
+<head>
+  <meta charset='UTF-8'>
+  <meta name='viewport'
+        content='width=device-width, initial-scale=1.0'>
+  <meta http-equiv='X-UA-Compatible'
+        content='ie=edge'>
+  <title>Pager visibility demo</title>
+  <link rel='stylesheet'
+        href='http://kendo.cdn.telerik.com/2020.2.617/styles/kendo.common.min.css' />
+  <link rel='stylesheet'
+        href='http://kendo.cdn.telerik.com/2020.2.617/styles/kendo.default.min.css' />
+  <link rel='stylesheet'
+        href='http://kendo.cdn.telerik.com/2020.2.617/styles/kendo.mobile.all.min.css' />
+  <link rel='stylesheet'
+        href='/assets/examples.css' />
+  <script
+          src='http://kendo.cdn.telerik.com/2020.2.617/js/jquery.min.js'></script>
+  <script
+          src='http://kendo.cdn.telerik.com/2020.2.617/js/kendo.all.min.js'></script>
+  <script src='/assets/console.js'></script>
+  <script
+          src='/out/kendoui-components.js'></script>
+</head>
+
+<body>
+  <div id="example">
+
+    <k-grid id="grid"
+            data-source
+            navigatable=true
+            height=400
+            filterable=true
+            pageable='{alwaysVisible:false,pageSizes:[5, 10, 20, 100]}'
+            toolbar='["create", "save", "cancel"]'
+            columns='[
+                "ProductName",
+                { field: "UnitPrice", title: "Unit Price", format: "{0:c}", width: 120 },
+                { field: "UnitsInStock", title: "Units In Stock", width: 120 },
+                { field: "Discontinued", width: 120, editor: customBoolEditor },
+                { command: "destroy", title: "&nbsp;", width: 150 }]'
+            editable=true></k-grid>
+
+    <div class="box wide">
+      <h4>Configure</h4>
+      <label
+             for="btnPagerVisibility">alwaysVisible:</label>
+      <input type="checkbox"
+             id="btnPagerVisibility" />
+    </div>
+
+    <script>
+      var crudServiceBaseUrl = "https://demos.telerik.com/kendo-ui/service",
+        dataSource = new kendo.data.DataSource({
+          transport: {
+            read: {
+              url: crudServiceBaseUrl + "/Products",
+              dataType: "jsonp"
+            },
+            update: {
+              url: crudServiceBaseUrl + "/Products/Update",
+              dataType: "jsonp"
+            },
+            destroy: {
+              url: crudServiceBaseUrl + "/Products/Destroy",
+              dataType: "jsonp"
+            },
+            create: {
+              url: crudServiceBaseUrl + "/Products/Create",
+              dataType: "jsonp"
+            },
+            parameterMap: function (options, operation) {
+              if (operation !== "read" && options.models) {
+                return { models: kendo.stringify(options.models) };
+              }
+            }
+          },
+          batch: true,
+          pageSize: 10,
+          schema: {
+            model: {
+              id: "ProductID",
+              fields: {
+                ProductID: { editable: false, nullable: true },
+                ProductName: { validation: { required: true } },
+                UnitPrice: { type: "number", validation: { required: true, min: 1 } },
+                Discontinued: { type: "boolean" },
+                UnitsInStock: { type: "number", validation: { min: 0, required: true } }
+              }
+            }
+          }
+        });
+
+      $(document).ready(function () {
+        var grid = $("#grid").data("kendoGrid");
+
+        $("#btnPagerVisibility").change(function () {
+          grid.setOptions({
+            pageable: {
+              alwaysVisible: this.checked
+            }
+          });
+        });
+      });
+
+      function customBoolEditor(container, options) {
+        $('<input class="k-checkbox" type="checkbox" name="Discontinued" data-type="boolean" data-bind="checked:Discontinued">').appendTo(container);
+        $('<label class="k-checkbox-label">&#8203;</label>').appendTo(container);
+      }
+    </script>
+  </div>
+
+</body>
+
+</html>

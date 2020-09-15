@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang='en'>
+
+<head>
+  <meta charset='UTF-8'>
+  <meta name='viewport'
+        content='width=device-width, initial-scale=1.0'>
+  <meta http-equiv='X-UA-Compatible'
+        content='ie=edge'>
+  <title>Inline editing demo</title>
+  <link rel='stylesheet'
+        href='http://kendo.cdn.telerik.com/2020.2.617/styles/kendo.common.min.css' />
+  <link rel='stylesheet'
+        href='http://kendo.cdn.telerik.com/2020.2.617/styles/kendo.default.min.css' />
+  <link rel='stylesheet'
+        href='http://kendo.cdn.telerik.com/2020.2.617/styles/kendo.mobile.all.min.css' />
+  <link rel='stylesheet'
+        href='/assets/examples.css' />
+  <script
+          src='http://kendo.cdn.telerik.com/2020.2.617/js/jquery.min.js'></script>
+  <script
+          src='http://kendo.cdn.telerik.com/2020.2.617/js/kendo.all.min.js'></script>
+  <script src='/assets/console.js'></script>
+  <script
+          src='/out/kendoui-components.js'></script>
+</head>
+
+<body>
+  <div id="example">
+    <k-grid data-source
+            pageable=true
+            height=550
+            toolbar='["create"]'
+            columns='[
+                  "ProductName",
+                  { field: "UnitPrice", title: "Unit Price", format: "{0:c}", width: "120px" },
+                  { field: "UnitsInStock", title: "Units In Stock", width: "120px" },
+                  { field: "Discontinued", width: "120px", editor: customBoolEditor },
+                  { command: ["edit", "destroy"], title: "&nbsp;", width: "250px" }]'
+            editable=inline></k-grid>
+    <script>
+      var crudServiceBaseUrl = "https://demos.telerik.com/kendo-ui/service",
+        dataSource = new kendo.data.DataSource({
+          transport: {
+            read: {
+              url: crudServiceBaseUrl + "/Products",
+              dataType: "jsonp"
+            },
+            update: {
+              url: crudServiceBaseUrl + "/Products/Update",
+              dataType: "jsonp"
+            },
+            destroy: {
+              url: crudServiceBaseUrl + "/Products/Destroy",
+              dataType: "jsonp"
+            },
+            create: {
+              url: crudServiceBaseUrl + "/Products/Create",
+              dataType: "jsonp"
+            },
+            parameterMap: function (options, operation) {
+              if (operation !== "read" && options.models) {
+                return { models: kendo.stringify(options.models) };
+              }
+            }
+          },
+          batch: true,
+          pageSize: 20,
+          schema: {
+            model: {
+              id: "ProductID",
+              fields: {
+                ProductID: { editable: false, nullable: true },
+                ProductName: { validation: { required: true } },
+                UnitPrice: { type: "number", validation: { required: true, min: 1 } },
+                Discontinued: { type: "boolean" },
+                UnitsInStock: { type: "number", validation: { min: 0, required: true } }
+              }
+            }
+          }
+        });
+
+      function customBoolEditor(container, options) {
+        var guid = kendo.guid();
+        $('<input class="k-checkbox" id="' + guid + '" type="checkbox" name="Discontinued" data-type="boolean" data-bind="checked:Discontinued">').appendTo(container);
+        $('<label class="k-checkbox-label" for="' + guid + '">&#8203;</label>').appendTo(container);
+      }
+    </script>
+  </div>
+</body>
+
+</html>

@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang='en'>
+
+<head>
+  <meta charset='UTF-8'>
+  <meta name='viewport'
+        content='width=device-width, initial-scale=1.0'>
+  <meta http-equiv='X-UA-Compatible'
+        content='ie=edge'>
+  <title>Localization demo</title>
+  <link rel='stylesheet'
+        href='http://kendo.cdn.telerik.com/2020.2.617/styles/kendo.common.min.css' />
+  <link rel='stylesheet'
+        href='http://kendo.cdn.telerik.com/2020.2.617/styles/kendo.default.min.css' />
+  <link rel='stylesheet'
+        href='http://kendo.cdn.telerik.com/2020.2.617/styles/kendo.mobile.all.min.css' />
+  <link rel='stylesheet'
+        href='/assets/examples.css' />
+  <script
+          src='http://kendo.cdn.telerik.com/2020.2.617/js/jquery.min.js'></script>
+  <script
+          src='http://kendo.cdn.telerik.com/2020.2.617/js/kendo.all.min.js'></script>
+  <script src='/assets/console.js'></script>
+  <script
+          src='/out/kendoui-components.js'></script>
+</head>
+
+<body>
+  <div id="example">
+    <div class="box wide">
+      <label for="language">Choose
+        language:</label>
+      <k-drop-down-list id="language"
+                        value="en-US"
+                        change=changeLanguage
+                        data-text-field=text
+                        data-value-field=value
+                        data-source='[
+                            { text: "bg-BG" },
+                            { text: "en-US" },
+                            { text: "de-DE" },
+                            { text: "zh-CN" }
+                          ]'></k-drop-down-list>
+    </div>
+
+
+    <script>
+      var crudServiceBaseUrl = "https://demos.telerik.com/kendo-ui/service";
+
+      var dataSource = new kendo.data.TreeListDataSource({
+        transport: {
+          read: {
+            url: crudServiceBaseUrl + "/EmployeeDirectory",
+            dataType: "jsonp"
+          },
+          update: {
+            url: crudServiceBaseUrl + "/EmployeeDirectory/Update",
+            dataType: "jsonp"
+          },
+          destroy: {
+            url: crudServiceBaseUrl + "/EmployeeDirectory/Destroy",
+            dataType: "jsonp"
+          },
+          create: {
+            url: crudServiceBaseUrl + "/EmployeeDirectory/Create",
+            dataType: "jsonp"
+          }
+        },
+        schema: {
+          model: {
+            id: "EmployeeId",
+            parentId: "ReportsTo",
+            fields: {
+              EmployeeId: { type: "number", nullable: false },
+              ReportsTo: { field: "ReportsTo", nullable: true }
+            }
+          }
+        }
+      });
+
+      var columns = [
+        { field: "FirstName", expandable: true, title: "First Name", width: 250 },
+        { field: "LastName", title: "Last Name" },
+        { field: "Position" },
+        { command: ["edit", "destroy"], title: "", width: "300px" }
+      ];
+      function changeLanguage() {
+        kendo.ui.progress($("#treelist"), true);
+        var baseUrl = 'https://kendo.cdn.telerik.com/2018.3.1017/js/messages/kendo.messages.';
+        $.getScript(baseUrl + this.value() + ".min.js", function () {
+          kendo.ui.progress($("#treelist"), false);
+          createTreeList();
+        });
+      }
+
+      function createTreeList() {
+        var element = $("#treelist");
+
+        if (element.data("kendoTreeList")) {
+          element.data("kendoTreeList").destroy();
+          element.empty();
+        }
+
+        $(`<k-tree-list id="treelist"
+                 data-source
+                 column-menu=false
+                 toolbar='["create"]'
+                 editable=inline
+                 columns></k-tree-list>`).appendTo('#example');
+      }
+
+      $(document).ready(function () {
+        $("#language").data("kendoDropDownList").trigger("change");
+      });
+    </script>
+  </div>
+</body>
+
+</html>

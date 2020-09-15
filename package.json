@@ -1,0 +1,36 @@
+{
+  "name": "kendoui-components",
+  "version": "0.2.0",
+  "description": "kendo ui components",
+  "files": [
+    "/dist",
+    "/assets/components",
+    "/assets/demo.gif"
+  ],
+  "scripts": {
+    "watch": "tsc --watch",
+    "clean": "rm -rf out/* dist/*",
+    "start": "live-server --cors",
+    "dist": "tsc; ./node_modules/.bin/uglifyjs out/kendoui-components.js -o dist/kendoui-components.min.js -c -m --toplevel"
+  },
+  "dependencies": {
+    "express": "^4.16.4",
+    "formidable": "^1.2.1",
+    "serve-index": "^1.9.1"
+  },
+  "devDependencies": {
+    "@types/formidable": "^1.0.31",
+    "@types/jquery": "^3.5.1",
+    "@types/kendo-ui": "^2020.2.0",
+    "@types/node": "^14.10.1",
+    "balanced-match": "^1.0.0",
+    "live-server": "^1.2.1",
+    "uglify-es": "^3.3.9"
+  },
+  "author": "Arthur Wang",
+  "license": "Apache 2",
+  "bugs": {
+    "url": "https://github.com/arthwang/kendoui-components/issues"
+  },
+  "homepage": "https://github.com/arthwang/kendoui-components"
+}

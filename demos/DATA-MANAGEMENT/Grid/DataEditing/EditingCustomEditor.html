@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang='en'>
+
+<head>
+  <meta charset='UTF-8'>
+  <meta name='viewport'
+        content='width=device-width, initial-scale=1.0'>
+  <meta http-equiv='X-UA-Compatible'
+        content='ie=edge'>
+  <title>Editing custom editor demo</title>
+  <link rel='stylesheet'
+        href='http://kendo.cdn.telerik.com/2020.2.617/styles/kendo.common.min.css' />
+  <link rel='stylesheet'
+        href='http://kendo.cdn.telerik.com/2020.2.617/styles/kendo.default.min.css' />
+  <link rel='stylesheet'
+        href='http://kendo.cdn.telerik.com/2020.2.617/styles/kendo.mobile.all.min.css' />
+  <link rel='stylesheet'
+        href='/assets/examples.css' />
+  <script
+          src='http://kendo.cdn.telerik.com/2020.2.617/js/jquery.min.js'></script>
+  <script
+          src='http://kendo.cdn.telerik.com/2020.2.617/js/kendo.all.min.js'></script>
+  <script src='/assets/console.js'></script>
+  <script
+          src='/out/kendoui-components.js'></script>
+</head>
+
+<body>
+  <script
+          src="https://demos.telerik.com/kendo-ui/content/shared/js/products.js"></script>
+  <div id="example">
+    <k-grid data-source
+            pageable=true
+            height=550
+            toolbar='["create"]'
+            columns='[
+                  { field: "ProductName", title: "Product Name" },
+                  { field: "Category", title: "Category", width: "180px", editor: categoryDropDownEditor, template: "#=Category.CategoryName#" },
+                  { field: "UnitPrice", title: "Unit Price", format: "{0:c}", width: "130px" },
+                  { command: "destroy", title: " ", width: "150px" }]'
+            editable=true></k-grid>
+
+    <script>
+      var dataSource = new kendo.data.DataSource({
+        pageSize: 20,
+        data: products,
+        autoSync: true,
+        schema: {
+          model: {
+            id: "ProductID",
+            fields: {
+              ProductID: { editable: false, nullable: true },
+              ProductName: { validation: { required: true } },
+              Category: { defaultValue: { CategoryID: 1, CategoryName: "Beverages" } },
+              UnitPrice: { type: "number", validation: { required: true, min: 1 } }
+            }
+          }
+        }
+      });
+
+      function categoryDropDownEditor(container, options) {
+        $(`<k-drop-down-list 
+          required 
+          name=${options.field} 
+          auto-bind=false 
+          data-text-field=CategoryName 
+          data-value-field=CategoryID 
+          data-source='{
+              type: "odata",
+              transport: {
+                read: "https://demos.telerik.com/kendo-ui/service/Northwind.svc/Categories"
+              }
+            }'></k-drop-down-list>`)
+          .appendTo(container);
+      }
+
+    </script>
+  </div>
+</body>
+
+</html>

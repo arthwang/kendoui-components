@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang='en'>
+
+<head>
+  <meta charset='UTF-8'>
+  <meta name='viewport'
+        content='width=device-width, initial-scale=1.0'>
+  <meta http-equiv='X-UA-Compatible'
+        content='ie=edge'>
+  <title>Export to PDF demo</title>
+  <link rel='stylesheet'
+        href='http://kendo.cdn.telerik.com/2020.2.617/styles/kendo.common.min.css' />
+  <link rel='stylesheet'
+        href='http://kendo.cdn.telerik.com/2020.2.617/styles/kendo.default.min.css' />
+  <link rel='stylesheet'
+        href='http://kendo.cdn.telerik.com/2020.2.617/styles/kendo.mobile.all.min.css' />
+  <link rel='stylesheet'
+        href='/assets/examples.css' />
+  <script
+          src='http://kendo.cdn.telerik.com/2020.2.617/js/jquery.min.js'></script>
+  <script
+          src='http://kendo.cdn.telerik.com/2020.2.617/js/kendo.all.min.js'></script>
+  <script
+          src='http://kendo.cdn.telerik.com/2020.2.617/js/jszip.min.js'></script>
+  <script src='/assets/console.js'></script>
+  <script
+          src='/out/kendoui-components.js'></script>
+</head>
+
+<body>
+  <div id="example">
+    <button id="export"
+            class="k-button k-button-icontext hidden-on-narrow"><span
+            class="k-icon k-i-pdf"></span>Export
+      to
+      PDF</button>
+    <k-pivot-grid id="pivotgrid"
+                  class="hidden-on-narrow"
+                  pdf='{
+                      fileName: "Kendo UI PivotGrid Export.pdf",
+                      proxyURL: "https://demos.telerik.com/kendo-ui/service/export"
+                    }'
+                  filterable=true
+                  sortable=true
+                  column-width=200
+                  height=580
+                  data-source='{
+                    type: "xmla",
+                    columns: [{ name: "[Date].[Calendar]", expand: true }],
+                    rows: [{ name: "[Product].[Category]", expand: true }],
+                    measures: ["[Measures].[Reseller Freight Cost]"],
+                    transport: {
+                      connection: {
+                        catalog: "Adventure Works DW 2008R2",
+                        cube: "Adventure Works"
+                      },
+                      read: "https://demos.telerik.com/olap/msmdpump.dll"
+                    },
+                    schema: {
+                      type: "xmla"
+                    },
+                    error: function (e) {
+                      alert("error: " + kendo.stringify(e.errors[0]));
+                    }
+                  }'></k-pivot-grid>
+
+    <div class="responsive-message"></div>
+
+    <script>
+      $(document).ready(function () {
+        var pivotgrid = $("#pivotgrid").data("kendoPivotGrid");
+        $("#export").click(function () {
+          pivotgrid.saveAsPDF();
+        });
+      });
+    </script>
+    <style>
+      #export {
+        margin: 0 0 10px 1px;
+      }
+
+      /*
+            Use the DejaVu Sans font for display and embedding in the PDF file.
+            The standard PDF fonts have no support for Unicode characters.
+        */
+      .k-pivot {
+        font-family: "DejaVu Sans", "Arial", sans-serif;
+      }
+    </style>
+    <script>
+      // Import DejaVu Sans font for embedding
+
+      // NOTE: Only required if the Kendo UI stylesheets are loaded
+      // from a different origin, e.g. cdn.kendostatic.com
+      kendo.pdf.defineFont({
+        "DejaVu Sans": "https://kendo.cdn.telerik.com/2016.2.607/styles/fonts/DejaVu/DejaVuSans.ttf",
+        "DejaVu Sans|Bold": "https://kendo.cdn.telerik.com/2016.2.607/styles/fonts/DejaVu/DejaVuSans-Bold.ttf",
+        "DejaVu Sans|Bold|Italic": "https://kendo.cdn.telerik.com/2016.2.607/styles/fonts/DejaVu/DejaVuSans-Oblique.ttf",
+        "DejaVu Sans|Italic": "https://kendo.cdn.telerik.com/2016.2.607/styles/fonts/DejaVu/DejaVuSans-Oblique.ttf",
+        "WebComponentsIcons": "https://kendo.cdn.telerik.com/2017.1.223/styles/fonts/glyphs/WebComponentsIcons.ttf"
+      });
+    </script>
+  </div>
+</body>
+
+</html>

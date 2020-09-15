@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang='en'>
+
+<head>
+  <meta charset='UTF-8'>
+  <meta name='viewport'
+        content='width=device-width, initial-scale=1.0'>
+  <meta http-equiv='X-UA-Compatible'
+        content='ie=edge'>
+  <title>Virtualization of remote data</title>
+  <link rel='stylesheet'
+        href='http://kendo.cdn.telerik.com/2020.2.617/styles/kendo.common.min.css' />
+  <link rel='stylesheet'
+        href='http://kendo.cdn.telerik.com/2020.2.617/styles/kendo.default.min.css' />
+  <link rel='stylesheet'
+        href='http://kendo.cdn.telerik.com/2020.2.617/styles/kendo.mobile.all.min.css' />
+  <link rel='stylesheet'
+        href='/assets/examples.css' />
+  <script
+          src='http://kendo.cdn.telerik.com/2020.2.617/js/jquery.min.js'></script>
+  <script
+          src='http://kendo.cdn.telerik.com/2020.2.617/js/kendo.all.min.js'></script>
+  <script src='/assets/console.js'></script>
+  <script
+          src='/out/kendoui-components.js'></script>
+</head>
+
+<body>
+  <div id="example">
+    <k-grid id="grid"
+            data-source='{
+                  type: "odata",
+                  serverPaging: true,
+                  serverSorting: true,
+                  pageSize: 100,
+                  transport: {
+                    read: "https://demos.telerik.com/kendo-ui/service/Northwind.svc/Orders"
+                  }
+                }'
+            height=543
+            scrollable='{virtual:true}'
+            sortable=true
+            columns='[
+                  { field: "OrderID", title: "Order ID", width: 110 },
+                  { field: "CustomerID", title: "Customer ID", width: 130 },
+                  { field: "ShipName", title: "Ship Name", width: 280 },
+                  { field: "ShipAddress", title: "Ship Address" },
+                  { field: "ShipCity", title: "Ship City", width: 160 },
+                  { field: "ShipCountry", title: "Ship Country", width: 160 }
+                ]'></k-grid>
+    <style>
+      /*horizontal Grid scrollbar should appear if the browser window is shrinked too much*/
+      #grid table {
+        min-width: 1190px;
+      }
+    </style>
+  </div>
+
+</body>
+
+</html>

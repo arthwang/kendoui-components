@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang='en'>
+
+<head>
+  <meta charset='UTF-8'>
+  <meta name='viewport'
+        content='width=device-width, initial-scale=1.0'>
+  <meta http-equiv='X-UA-Compatible'
+        content='ie=edge'>
+  <title>Binding to websocket demo</title>
+  <link rel='stylesheet'
+        href='http://kendo.cdn.telerik.com/2020.2.617/styles/kendo.common.min.css' />
+  <link rel='stylesheet'
+        href='http://kendo.cdn.telerik.com/2020.2.617/styles/kendo.default.min.css' />
+  <link rel='stylesheet'
+        href='http://kendo.cdn.telerik.com/2020.2.617/styles/kendo.mobile.all.min.css' />
+  <link rel='stylesheet'
+        href='/assets/examples.css' />
+  <script
+          src='http://kendo.cdn.telerik.com/2020.2.617/js/jquery.min.js'></script>
+  <script
+          src='http://kendo.cdn.telerik.com/2020.2.617/js/kendo.all.min.js'></script>
+  <script src='/assets/console.js'></script>
+  <script
+          src='/out/kendoui-components.js'></script>
+</head>
+
+<body>
+  <div id="example">
+    <k-grid id="grid"
+            height=550
+            auto-bind=false
+            editable=true
+            sortable=true
+            columns='[
+                { field: "UnitPrice" },
+                { field: "ProductName" },
+                { command: "destroy", width: 150 }
+              ]'></k-grid>
+    <k-notification id="notification"
+                    width='100%'
+                    position='{top:0,left:0}'>
+    </k-notification>
+    <script>
+      $(function () {
+        if (typeof WebSocket === "undefined") {
+          $("#grid").html('This demo requires <a href="http://en.wikipedia.org/wiki/WebSocket">WebSocket</a> support.<a href="http://updateyourbrowser.net/" title="Update Your Browser"><img src="http://updateyourbrowser.net/uyb.jpg" border="0" alt="Update Your Browser" /></a>');
+          return;
+        }
+
+        var host = "wss://kendoui-ws-demo.herokuapp.com";
+        var ws = new WebSocket(host);
+
+        //Bind the grid when the socket connects
+        ws.onopen = function () {
+          $("#grid").data("kendoGrid").dataSource.fetch();
+        };
+
+        //Close the socket when the browser window is closed.
+        window.onbeforeunload = function () {
+          ws.close();
+        }
+
+        //Helper function to send data through the socket
+        function send(ws, request, callback) {
+          if (ws.readyState != 1) {
+            alert("Socket was closed. Please reload the page.");
+            return;
+          }
+          console.log('ws:request:', request);
+
+
+          //Assign unique id to the request. Will use that to distinguish the response.
+          request.id = kendo.guid();
+
+          //Listen to the "message" event to get server response
+          ws.addEventListener("message", function (e) {
+            var result = JSON.parse(e.data);
+
+            //Check if the response is for the current request
+            if (result.id == request.id) {
+              //Stop listening
+              ws.removeEventListener("message", arguments.callee);
+
+              //Invoke the callback with the result
+              callback(result);
+            }
+          });
+
+          //Send the data to the server
+          ws.send(JSON.stringify(request));
+        }
+
+        var dataSource = {
+          // Handle the push event to display notifications when push updates arrive
+          push: function (e) {
+            var notification = $("#notification").data("kendoNotification");
+            notification.success(e.type);
+          },
+          autoSync: true,
+          schema: {
+            model: {
+              id: "ProductID",
+              fields: {
+                "ProductID": { editable: false, nullable: true },
+                "CreatedAt": { type: "date" },
+                "UnitPrice": { type: "number" }
+              }
+            },
+            data: "data"
+          },
+          sort: [{ field: "CreatedAt", dir: "desc" }],
+          transport: {
+            push: function (options) {
+              //Listen to the "message" event fired when the server pushes data
+              ws.addEventListener("message", function (e) {
+                var result = JSON.parse(e.data);
+
+                //Check what the push type is and invoke the corresponding callback.
+                if (result.type == "push-update") {
+                  options.pushUpdate(result);
+                } else if (result.type == "push-destroy") {
+                  options.pushDestroy(result);
+                } else if (result.type == "push-create") {
+                  options.pushCreate(result);
+                }
+              });
+            },
+            read: function (options) {
+              var request = { type: "read" };
+
+              send(ws, request, function (result) {
+                options.success(result);
+              });
+            },
+            update: function (options) {
+              var request = { type: "update", data: [options.data] };
+
+              send(ws, request, options.success);
+            },
+            destroy: function (options) {
+              var request = { type: "destroy", data: [options.data] };
+
+              send(ws, request, options.success);
+            },
+            create: function (options) {
+              var request = { type: "create", data: [options.data] };
+
+              send(ws, request, options.success);
+            }
+          }
+        };
+
+        $('#grid').data('kendoGrid').setOptions({ dataSource: dataSource });
+      });
+    </script>
+    <div class="box wide">
+      <h4>Information</h4>
+      <p>This example demonstrates real-time
+        push-notifications from a WebSocket. To
+        see
+        the real-time updates:</p>
+      <ol>
+        <li>Open this page in another browser
+          window by clicking <a
+             href="./BindingToWebSocket.html"
+             target="_new">here</a></li>
+        <li>Create, update or destroy grid items.
+        </li>
+      </ol>
+      <p><strong>Note:</strong> To further
+        enhance
+        real-time experience, the Grid will also
+        display changes from other users,
+        which currently happen to perform CRUD
+        operations on the same demo.
+        If you refresh the page, all changes will
+        be lost, because the remote service only
+        broadcasts changes, it does not actually
+        save them.</p>
+    </div>
+  </div>
+</body>
+
+</html>

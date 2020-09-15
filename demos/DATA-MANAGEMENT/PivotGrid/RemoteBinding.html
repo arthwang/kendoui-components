@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang='en'>
+
+<head>
+  <meta charset='UTF-8'>
+  <meta name='viewport'
+        content='width=device-width, initial-scale=1.0'>
+  <meta http-equiv='X-UA-Compatible'
+        content='ie=edge'>
+  <title>Remote binding demo</title>
+  <link rel='stylesheet'
+        href='http://kendo.cdn.telerik.com/2020.2.617/styles/kendo.common.min.css' />
+  <link rel='stylesheet'
+        href='http://kendo.cdn.telerik.com/2020.2.617/styles/kendo.default.min.css' />
+  <link rel='stylesheet'
+        href='http://kendo.cdn.telerik.com/2020.2.617/styles/kendo.mobile.all.min.css' />
+  <link rel='stylesheet'
+        href='/assets/examples.css' />
+  <script
+          src='http://kendo.cdn.telerik.com/2020.2.617/js/jquery.min.js'></script>
+  <script
+          src='http://kendo.cdn.telerik.com/2020.2.617/js/kendo.all.min.js'></script>
+  <script src='/assets/console.js'></script>
+  <script
+          src='/out/kendoui-components.js'></script>
+</head>
+
+<body>
+  <div id="example">
+    <k-pivot-configurator id="configurator"
+                          class="hidden-on-narrow"
+                          filterable=true
+                          height=370
+                          data-source>
+    </k-pivot-configurator>
+    <k-pivot-grid id="pivotgrid"
+                  class="hidden-on-narrow"
+                  filterable=true
+                  column-width=120
+                  height=570
+                  data-source></k-pivot-grid>
+    <div class="responsive-message"></div>
+
+    <script>
+      var dataSource = new kendo.data.PivotDataSource({
+        type: "odata",
+        transport: {
+          read: "https://demos.telerik.com/kendo-ui/service/Northwind.svc/Customers"
+        },
+        schema: {
+          cube: {
+            dimensions: {
+              ContactName: { caption: "All Contacts" },
+              CompanyName: { caption: "All Companies" },
+              Country: { caption: "All Countries" },
+              ContactTitle: { caption: "All Titles" }
+            },
+            measures: {
+              "Contacts Count": { field: "CustomerID", aggregate: "count" }
+            }
+          }
+        },
+        columns: [{ name: "Country", expand: true }, { name: "CompanyName" }],
+        rows: [{ name: "ContactTitle", expand: true }],
+        measures: ["Contacts Count"]
+      });
+    </script>
+    <style>
+      #pivotgrid {
+        width: 70%;
+      }
+
+      .hidden-on-narrow {
+        display: inline-block;
+        vertical-align: top;
+      }
+    </style>
+  </div>
+</body>
+
+</html>

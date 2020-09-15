@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang='en'>
+
+<head>
+  <meta charset='UTF-8'>
+  <meta name='viewport'
+        content='width=device-width, initial-scale=1.0'>
+  <meta http-equiv='X-UA-Compatible'
+        content='ie=edge'>
+  <title>Persist state demo</title>
+  <link rel='stylesheet'
+        href='http://kendo.cdn.telerik.com/2020.2.617/styles/kendo.common.min.css' />
+  <link rel='stylesheet'
+        href='http://kendo.cdn.telerik.com/2020.2.617/styles/kendo.default.min.css' />
+  <link rel='stylesheet'
+        href='http://kendo.cdn.telerik.com/2020.2.617/styles/kendo.mobile.all.min.css' />
+  <link rel='stylesheet'
+        href='/assets/examples.css' />
+  <script
+          src='http://kendo.cdn.telerik.com/2020.2.617/js/jquery.min.js'></script>
+  <script
+          src='http://kendo.cdn.telerik.com/2020.2.617/js/kendo.all.min.js'></script>
+  <script src='/assets/console.js'></script>
+  <script
+          src='/out/kendoui-components.js'></script>
+</head>
+
+<body>
+  <div id="example">
+    <div class="box wide">
+      <a href="#"
+         class="k-button"
+         id="save">Save State</a>
+      <a href="#"
+         class="k-button"
+         id="load">Load State</a>
+    </div>
+    <k-grid id='grid'
+            data-source='{
+                  type: "odata",
+                  transport: {
+                    read: "https://demos.telerik.com/kendo-ui/service/Northwind.svc/Customers"
+                  },
+                  pageSize: 20
+                }'
+            height=550
+            groupable=true
+            sortable=true
+            reorderable=true
+            resizable=true
+            column-menu=true
+            filterable='{mode:"row"}'
+            pageable='{refresh:true,pageSizes:true,buttonCount:5}'
+            columns='[{
+                  field: "ContactName",
+                  title: "Contact Name",
+                  width: 250,
+                  locked: true
+                }, {
+                  field: "ContactTitle",
+                  title: "Contact Title",
+                  width: 350
+                }, {
+                  field: "CompanyName",
+                  title: "Company Name",
+                  width: 350
+                }, {
+                  field: "Country",
+                  width: 450
+                }]'></k-grid>
+    <script>
+      $(document).ready(function () {
+        var grid = $("#grid").data("kendoGrid");
+
+        $("#save").click(function (e) {
+          e.preventDefault();
+          localStorage["kendo-grid-options"] = kendo.stringify(grid.getOptions());
+        });
+
+        $("#load").click(function (e) {
+          e.preventDefault();
+          var options = localStorage["kendo-grid-options"];
+          if (options) {
+            grid.setOptions(JSON.parse(options));
+          }
+        });
+      });
+    </script>
+  </div>
+</body>
+
+</html>

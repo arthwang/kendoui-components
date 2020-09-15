@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang='en'>
+
+<head>
+  <meta charset='UTF-8'>
+  <meta name='viewport'
+        content='width=device-width, initial-scale=1.0'>
+  <meta http-equiv='X-UA-Compatible'
+        content='ie=edge'>
+  <title>Binding to local data</title>
+  <link rel='stylesheet'
+        href='http://kendo.cdn.telerik.com/2020.2.617/styles/kendo.common.min.css' />
+  <link rel='stylesheet'
+        href='http://kendo.cdn.telerik.com/2020.2.617/styles/kendo.default.min.css' />
+  <link rel='stylesheet'
+        href='http://kendo.cdn.telerik.com/2020.2.617/styles/kendo.mobile.all.min.css' />
+  <link rel='stylesheet'
+        href='/assets/examples.css' />
+  <script
+          src='http://kendo.cdn.telerik.com/2020.2.617/js/jquery.min.js'></script>
+  <script
+          src='http://kendo.cdn.telerik.com/2020.2.617/js/kendo.all.min.js'></script>
+  <script src='/assets/console.js'></script>
+  <script
+          src='/out/kendoui-components.js'></script>
+</head>
+
+<body>
+  <script
+          src="https://demos.telerik.com/kendo-ui/content/shared/js/products.js"></script>
+
+  <div id="example">
+    <k-grid data-source='{
+                  data: products,
+                  schema: {
+                    model: {
+                      fields: {
+                        ProductName: { type: "string" },
+                        UnitPrice: { type: "number" },
+                        UnitsInStock: { type: "number" },
+                        Discontinued: { type: "boolean" }
+                      }
+                    }
+                  },
+                  pageSize: 20
+                }'
+            height='500'
+            scrollable='true'
+            sortable='true'
+            filterable='true'
+            pageable='{
+                  input: true,
+                  numeric: false
+                }'
+            columns='[
+                "ProductName",
+                { field: "UnitPrice", title: "Unit Price", format: "{0:c}", width: "130px" },
+                { field: "UnitsInStock", title: "Units In Stock", width: "130px" },
+                { field: "Discontinued", width: "130px" }
+              ]'></k-grid>
+
+  </div>
+
+</body>
+
+</html>

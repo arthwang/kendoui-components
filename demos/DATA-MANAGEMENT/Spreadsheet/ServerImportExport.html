@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang='en'>
+
+<head>
+  <meta charset='UTF-8'>
+  <meta name='viewport'
+        content='width=device-width, initial-scale=1.0'>
+  <meta http-equiv='X-UA-Compatible'
+        content='ie=edge'>
+  <title>Server import/export demo</title>
+  <link rel='stylesheet'
+        href='http://kendo.cdn.telerik.com/2020.2.617/styles/kendo.common.min.css' />
+  <link rel='stylesheet'
+        href='http://kendo.cdn.telerik.com/2020.2.617/styles/kendo.default.min.css' />
+  <link rel='stylesheet'
+        href='http://kendo.cdn.telerik.com/2020.2.617/styles/kendo.mobile.all.min.css' />
+  <link rel='stylesheet'
+        href='/assets/examples.css' />
+  <script
+          src='http://kendo.cdn.telerik.com/2020.2.617/js/jquery.min.js'></script>
+  <script
+          src='http://kendo.cdn.telerik.com/2020.2.617/js/kendo.all.min.js'></script>
+  <script src='/assets/console.js'></script>
+  <script
+          src='/out/kendoui-components.js'></script>
+</head>
+
+<body>
+  <div id="example">
+    <div class="box wide">
+      <div class="box-col">
+        <h4>Export</h4>
+        <form action="https://demos.telerik.com/kendo-ui/spreadsheet/Download"
+              method="POST">
+          <input type="hidden"
+                 id="download-data"
+                 name="data" />
+          <input type="hidden"
+                 id="download-extension"
+                 name="extension" />
+          <ul>
+            <li><input type="submit"
+                     class="k-button download"
+                     data-extension=".xlsx"
+                     value="Save as XLSX" /></li>
+            <li><input type="submit"
+                     class="k-button download"
+                     data-extension=".csv"
+                     value="Save as CSV" /></li>
+            <li><input type="submit"
+                     class="k-button download"
+                     data-extension=".txt"
+                     value="Save as Tab-delimited text" />
+            </li>
+            <li><input type="submit"
+                     class="k-button download"
+                     data-extension=".json"
+                     value="Save as JSON" /></li>
+          </ul>
+        </form>
+      </div>
+      <div class="box-col">
+        <h4>Import</h4>
+        <k-upload type="file"
+                  name="file"
+                  id="upload"
+                  async='{saveUrl:"https://demos.telerik.com/kendo-ui/spreadsheet/Upload"}'
+                  multiple=false
+                  localization='{select:"Select file to import..."}'
+                  select='function (e) {
+                      var extension = e.files[0].extension.toLowerCase();
+                      if (ALLOWED_EXTENSIONS.indexOf(extension) == -1) {
+                        alert("Please, select a supported file format");
+                        e.preventDefault();
+                      }
+                    }'
+                  success='function (e) {
+                      // Load the converted document into the spreadsheet
+                      spreadsheet.fromJSON(e.response);
+                    }'></k-upload>
+      </div>
+    </div>
+    <k-spreadsheet id="spreadsheet"
+                   style="width: 100%;"
+                   excel='{
+                      // Required to enable Excel Export in some browsers
+                      proxyURL: "https://demos.telerik.com/kendo-ui/service/export"
+                    }'></k-spreadsheet>
+    <style>
+      .download {
+        width: 260px;
+      }
+    </style>
+    <script>
+      var ALLOWED_EXTENSIONS = [".xlsx", ".csv", ".txt", ".json"];
+      var spreadsheet;
+      $(function () {
+        spreadsheet = $("#spreadsheet").data("kendoSpreadsheet");
+
+        $.getJSON("https://demos.telerik.com/kendo-ui/content/web/spreadsheet/products.json")
+          .done(function (sheets) {
+            spreadsheet.fromJSON({ sheets: sheets });
+          });
+
+        $(".download").click(function () {
+          $("#download-data").val(JSON.stringify(spreadsheet.toJSON()));
+          $("#download-extension").val($(this).data("extension"));
+        });
+      });
+    </script>
+
+  </div>
+
+</body>
+
+</html>

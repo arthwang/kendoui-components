@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang='en'>
+
+<head>
+  <meta charset='UTF-8'>
+  <meta name='viewport'
+        content='width=device-width, initial-scale=1.0'>
+  <meta http-equiv='X-UA-Compatible'
+        content='ie=edge'>
+  <title>Copy to excel demo</title>
+  <link rel='stylesheet'
+        href='http://kendo.cdn.telerik.com/2020.2.617/styles/kendo.common.min.css' />
+  <link rel='stylesheet'
+        href='http://kendo.cdn.telerik.com/2020.2.617/styles/kendo.default.min.css' />
+  <link rel='stylesheet'
+        href='http://kendo.cdn.telerik.com/2020.2.617/styles/kendo.mobile.all.min.css' />
+  <link rel='stylesheet'
+        href='/assets/examples.css' />
+  <script
+          src='http://kendo.cdn.telerik.com/2020.2.617/js/jquery.min.js'></script>
+  <script
+          src='http://kendo.cdn.telerik.com/2020.2.617/js/kendo.all.min.js'></script>
+  <script src='/assets/console.js'></script>
+  <script
+          src='/out/kendoui-components.js'></script>
+</head>
+
+<body>
+  <script
+          src="https://demos.telerik.com/kendo-ui/content/shared/js/orders.js"></script>
+
+  <div id="example">
+
+    <div class="box wide">
+      <h4>Information</h4>
+      <p>Select the cells you want to copy press
+        Ctrl/Command + C to copy into the
+        clipboard
+        then go to Excel and paste</p>
+    </div>
+
+    <k-grid data-source='{
+                  data: orders,
+                  pageSize: 6
+                }'
+            selectable='multiple cell'
+            allow-copy='true'
+            pageable='{buttonCount:5}'
+            scrollable='true'
+            columns='[
+                  {
+                    field: "ShipCountry",
+                    title: "Ship Country",
+                    width: 300
+                  },
+                  {
+                    field: "Freight",
+                    width: 300
+                  },
+                  {
+                    field: "OrderDate",
+                    title: "Order Date",
+                    format: "{0:dd/MM/yyyy}"
+                  }
+                ]'></k-grid>
+
+  </div>
+</body>
+
+</html>

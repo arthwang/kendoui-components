@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+<html lang='en'>
+
+<head>
+  <meta charset='UTF-8'>
+  <meta name='viewport'
+        content='width=device-width, initial-scale=1.0'>
+  <meta http-equiv='X-UA-Compatible'
+        content='ie=edge'>
+  <title>Selected date and range</title>
+  <link rel='stylesheet'
+        href='http://kendo.cdn.telerik.com/2020.2.617/styles/kendo.common.min.css' />
+  <link rel='stylesheet'
+        href='http://kendo.cdn.telerik.com/2020.2.617/styles/kendo.default.min.css' />
+  <link rel='stylesheet'
+        href='http://kendo.cdn.telerik.com/2020.2.617/styles/kendo.mobile.all.min.css' />
+  <link rel='stylesheet'
+        href='/assets/examples.css' />
+  <script
+          src='http://kendo.cdn.telerik.com/2020.2.617/js/jquery.min.js'></script>
+  <script
+          src='http://kendo.cdn.telerik.com/2020.2.617/js/kendo.all.min.js'></script>
+  <script src='/assets/console.js'></script>
+  <script
+          src='/out/kendoui-components.js'></script>
+</head>
+
+<body>
+  <div id="example">
+    <div class="box wide">
+      <div class="box-col">
+        <h4>Set Visible Range</h4>
+        <p>Start date of range</p>
+        <k-date-picker id="start-range"
+                       value='new Date("2014/6/1")'
+                       disable-dates='function (date) {
+                            var end = endRange ? endRange.value() : new Date("2014/7/13");
+                            if (date >= end) {
+                              return true;
+                            } else {
+                              return false;
+                            }
+                          }'
+                       open='function (e) {
+                            e.sender.setOptions(e.sender.options);
+                          }'
+                       change='function () {
+                            var range = gantt.range();
+                            range.start = this.value();
+                            gantt.range(range);
+                            if (this.value() > date.value()) {
+                              date.value("");
+                            }
+                          }'></k-date-picker>
+        <br />
+        <br />
+        <p>End date of range</p>
+        <k-date-picker id="end-range"
+                       value='new Date("2014/7/13")'
+                       disable-dates='function (date) {
+                            var start = startRange ? startRange.value() : new Date("2014/6/1");
+                            if (date <= start) {
+                              return true;
+                            } else {
+                              return false;
+                            }
+                          }'
+                       open='function (e) {
+                            e.sender.setOptions(e.sender.options);
+                          }'
+                       change='function () {
+                            var range = gantt.range();
+                            range.end = this.value();
+                            gantt.range(range);
+                            if (this.value() <= date.value()) {
+                              date.value("");
+                            }
+                          }'></k-date-picker>
+      </div>
+      <div class="box-col">
+        <h4>Set Selected Date</h4>
+        <br />
+        <k-date-picker id="date"
+                       value='new Date("2014/6/1")'
+                       disable-dates='function (date) {
+                              var start = startRange ? startRange.value() : new Date("2014/6/1");
+                              var end = endRange ? endRange.value() : new Date("2014/7/13");
+                              if (date < start || date >= end) {
+                                return true;
+                              } else {
+                                return false;
+                              }
+                            }'
+                       open='function (e) {
+                              e.sender.setOptions(e.sender.options);
+                            }'
+                       change='function () {
+                              gantt.date(this.value());
+                            }'></k-date-picker>
+      </div>
+    </div>
+
+    <k-gantt id="gantt"
+             data-source
+             dependencies
+             height='700'
+             editable='false'
+             show-work-days='false'
+             show-work-hours='false'
+             snap='false'
+             views
+             columns
+             navigate></k-gantt>
+    <script>
+
+      var serviceRoot = "https://demos.telerik.com/kendo-ui/service";
+
+      var dataSource = new kendo.data.GanttDataSource({
+        transport: {
+          read: {
+            url: serviceRoot + "/GanttTasks",
+            dataType: "jsonp"
+          }
+        },
+        schema: {
+          model: {
+            id: "id",
+            fields: {
+              id: { from: "ID" },
+              orderId: { from: "OrderID", type: "number" },
+              parentId: { from: "ParentID", type: "number" },
+              start: { from: "Start", type: "date" },
+              end: { from: "End", type: "date" },
+              title: { from: "Title", type: "string" },
+              percentComplete: { from: "PercentComplete", type: "number" },
+              summary: { from: "Summary", type: "boolean" },
+              expanded: { from: "Expanded", type: "boolean" }
+            }
+          }
+        }
+      });
+
+      var dependencies = new kendo.data.GanttDependencyDataSource({
+        transport: {
+          read: {
+            url: serviceRoot + "/GanttDependencies",
+            dataType: "jsonp"
+          }
+        },
+        schema: {
+          model: {
+            id: "id",
+            fields: {
+              id: { from: "ID", type: "number" },
+              predecessorId: { from: "PredecessorID", type: "number" },
+              successorId: { from: "SuccessorID", type: "number" },
+              type: { from: "Type", type: "number" }
+            }
+          }
+        }
+      });
+
+      var views = [{
+        type: "day",
+        range: {
+          start: new Date("2014/6/2"),
+          end: new Date("2014/6/8")
+        },
+        date: new Date("2014/6/2"),
+      }, {
+        type: "week",
+        selected: true,
+        range: {
+          start: new Date("2014/6/1"),
+          end: new Date("2014/7/13")
+        },
+        date: new Date("2014/6/1")
+      }, {
+        type: "month",
+        range: {
+          start: new Date("2014/5/18"),
+          end: new Date("2014/8/3")
+        },
+        date: new Date("2014/5/18")
+      }],
+        columns = [
+          { field: "id", title: "ID", width: 60 },
+          { field: "title", title: "Title" },
+          { field: "start", title: "Start Time", format: "{0:MM/dd/yyyy}", width: 100 },
+          { field: "end", title: "End Time", format: "{0:MM/dd/yyyy}", width: 100 }
+        ],
+
+        navigate = function (e) {
+          var viewsOptions = e.sender.options.views;
+          viewsOptions.forEach(function (view) {
+            if (view.type === e.view) {
+              startRange.value(view.range.start);
+              endRange.value(view.range.end);
+              date.value(view.date);
+              return;
+            }
+          })
+        };
+      var startRange, endRange, date;
+      $(document).bind("kendo:skinChange", function () {
+        gantt.refresh();
+      });
+      $(document).ready(function () {
+        gantt = $('#gantt').data("kendoGantt");
+        startRange = $('#start-range').data("kendoDatePicker");
+        endRange = $('#end-range').data("kendoDatePicker");
+        date = $('#date').data("kendoDatePicker");
+      });
+    </script>
+  </div>
+</body>
+
+</html>

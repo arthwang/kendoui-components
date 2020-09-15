@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang='en'>
+
+<head>
+  <meta charset='UTF-8'>
+  <meta name='viewport'
+        content='width=device-width, initial-scale=1.0'>
+  <meta http-equiv='X-UA-Compatible'
+        content='ie=edge'>
+  <title>Detail template demo</title>
+  <link rel='stylesheet'
+        href='http://kendo.cdn.telerik.com/2020.2.617/styles/kendo.common.min.css' />
+  <link rel='stylesheet'
+        href='http://kendo.cdn.telerik.com/2020.2.617/styles/kendo.default.min.css' />
+  <link rel='stylesheet'
+        href='http://kendo.cdn.telerik.com/2020.2.617/styles/kendo.mobile.all.min.css' />
+  <link rel='stylesheet'
+        href='/assets/examples.css' />
+  <script
+          src='http://kendo.cdn.telerik.com/2020.2.617/js/jquery.min.js'></script>
+  <script
+          src='http://kendo.cdn.telerik.com/2020.2.617/js/kendo.all.min.js'></script>
+  <script src='/assets/console.js'></script>
+  <script
+          src='/out/kendoui-components.js'></script>
+</head>
+
+<body>
+  <div id="example">
+    <k-grid id="grid"
+            data-source='{
+                  type: "odata",
+                  transport: {
+                    read: "https://demos.telerik.com/kendo-ui/service/Northwind.svc/Employees"
+                  },
+                  pageSize: 20,
+                  serverPaging: true,
+                  serverSorting: true
+                }'
+            height=550
+            sortable=true
+            pageable=false
+            detail-template=template
+            data-bound='function () {
+                  this.expandRow(this.tbody.find("tr.k-master-row").first());
+                }'
+            columns='[
+                  {
+                    field: "EmployeeID",
+                    title: "EmployeeID",
+                    width: "90px"
+                  },
+                  {
+                    field: "FirstName",
+                    title: "First Name",
+                    width: "120px"
+                  },
+                  {
+                    field: "LastName",
+                    title: "Last Name",
+                    width: "120px"
+                  },
+                  {
+                    field: "Country",
+                    width: "120px"
+                  },
+                  {
+                    field: "City",
+                    width: "120px"
+                  },
+                  {
+                    field: "Title"
+                  }
+                ]'></k-grid>
+
+    <script type="text/x-kendo-template"
+            id="template">
+        <k-tab-strip class="tabstrip" animation='{open:{effects: "fadeIn"}}'>
+                  <ul>
+                      <li class="k-state-active">
+                          Orders
+                      </li>
+                      <li>
+                          Contact Information
+                      </li>
+                  </ul>
+                  <div class='detail-wrapper'>
+                      <k-grid class="orders" 
+                            data-source='{
+                              type: "odata",
+                              transport: {
+                                read: "https://demos.telerik.com/kendo-ui/service/Northwind.svc/Orders"
+                              },
+                              serverPaging: true,
+                              serverSorting: true,
+                              serverFiltering: true,
+                              pageSize: 7,
+                              filter:{ field: "EmployeeID", operator: "eq", value: parseInt(${data.EmployeeID}) }
+                            }'
+                            scrollable=false
+                            sortable=true
+                            pageable=true
+                            columns='[
+                                { field: "OrderID", title: "ID", width: "70px" },
+                                { field: "ShipCountry", title: "Ship Country", width: "110px" },
+                                { field: "ShipAddress", title: "Ship Address" , width: "200px"},
+                                { field: "ShipName", title: "Ship Name", width: "300px" },
+                                {field: "EmployeeID", title:"Employee ID",  width:"70px"}
+                              ]'
+                            >
+                    </k-grid>
+                  </div>
+                  <div>
+                      <div class='employee-details'>
+                          <ul>
+                              <li><label>Country:</label>#= Country #</li>
+                              <li><label>City:</label>#= City #</li>
+                              <li><label>Address:</label>#= Address #</li>
+                              <li><label>Home Phone:</label>#= HomePhone #</li>
+                          </ul>
+                      </div>
+                  </div>
+        </k-tab-strip>
+    </script>
+
+    <style>
+      .k-detail-cell .k-tabstrip .k-content {
+        padding: 0.2em;
+      }
+
+      .employee-details ul {
+        list-style: none;
+        font-style: italic;
+        margin: 15px;
+        padding: 0;
+      }
+
+      .employee-details ul li {
+        margin: 0;
+        line-height: 1.7em;
+      }
+
+      .employee-details label {
+        display: inline-block;
+        width: 90px;
+        padding-right: 10px;
+        text-align: right;
+        font-style: normal;
+        font-weight: bold;
+      }
+    </style>
+  </div>
+</body>
+
+</html>

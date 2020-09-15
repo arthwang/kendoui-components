@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang='en'>
+
+<head>
+  <meta charset='UTF-8'>
+  <meta name='viewport'
+        content='width=device-width, initial-scale=1.0'>
+  <meta http-equiv='X-UA-Compatible'
+        content='ie=edge'>
+  <title>Keyboard navigation demo</title>
+  <link rel='stylesheet'
+        href='http://kendo.cdn.telerik.com/2020.2.617/styles/kendo.common.min.css' />
+  <link rel='stylesheet'
+        href='http://kendo.cdn.telerik.com/2020.2.617/styles/kendo.default.min.css' />
+  <link rel='stylesheet'
+        href='http://kendo.cdn.telerik.com/2020.2.617/styles/kendo.mobile.all.min.css' />
+  <link rel='stylesheet'
+        href='/assets/examples.css' />
+  <script
+          src='http://kendo.cdn.telerik.com/2020.2.617/js/jquery.min.js'></script>
+  <script
+          src='http://kendo.cdn.telerik.com/2020.2.617/js/kendo.all.min.js'></script>
+  <script src='/assets/console.js'></script>
+  <script
+          src='/out/kendoui-components.js'></script>
+</head>
+
+<body>
+  <div id="example">
+    <k-editor id="editor"
+              rows="10"
+              cols="30"
+              style="height: 240px;"
+              resizable='{toolbar:true,content:false}'>
+      &lt;p&gt;&lt;img
+      src=&quot;https://demos.telerik.com/kendo-ui/content/web/editor/kendo-ui-web.png&quot;
+      alt=&quot;Editor for ASP.NET MVC logo&quot;
+      style=&quot;display:block;margin-left:auto;margin-right:auto;&quot;
+      /&gt;&lt;/p&gt;
+      &lt;p&gt;
+      Kendo UI Editor allows your users to edit
+      HTML in a familiar, user-friendly
+      way.&lt;br /&gt;
+      In this version, the Editor provides the
+      core HTML editing engine, which includes
+      basic text formatting, hyperlinks, lists,
+      and image handling. The widget
+      &lt;strong&gt;outputs identical
+      HTML&lt;/strong&gt; across all major
+      browsers, follows
+      accessibility standards and provides API
+      for content manipulation.
+      &lt;/p&gt;
+    </k-editor>
+
+    <div class="box wide">
+      <h4>Keyboard legend</h4>
+      <ul class="keyboard-legend">
+        <li>
+          <span class="button-preview">
+            <span class="key-button">F10</span>
+          </span>
+          <span class="button-descr">
+            focuses toolbar
+          </span>
+        </li>
+        <li>
+          <span class="button-preview">
+            <span class="key-button">Tab</span>
+          </span>or
+          <span class="button-preview">
+            <span class="key-button">Right</span>
+          </span>
+          <span class="button-descr">
+            focuses next tool icon
+          </span>
+        </li>
+        <li>
+          <span class="button-preview">
+            <span
+                  class="key-button wide rightAlign">Shift</span>
+            +
+            <span class="key-button">Tab</span>
+          </span>or
+          <span class="button-preview">
+            <span class="key-button">Left</span>
+          </span>
+          <span class="button-descr">
+            focuses previous tool icon
+          </span>
+        </li>
+        <li>
+          <span class="button-preview">
+            <span class="key-button">Home</span>
+          </span>
+          <span class="button-descr">
+            focuses first tool
+          </span>
+        </li>
+        <li>
+          <span class="button-preview">
+            <span class="key-button">End</span>
+          </span>
+          <span class="button-descr">
+            focuses last tool
+          </span>
+        </li>
+        <li>
+          <span class="button-preview">
+            <span class="key-button">Enter</span>
+          </span>or
+          <span class="button-preview">
+            <span class="key-button">Space</span>
+          </span>
+          <span class="button-descr">
+            activates tool
+          </span>
+        </li>
+      </ul>
+    </div>
+
+  </div>
+</body>
+
+</html>
