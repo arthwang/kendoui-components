@@ -2,7 +2,7 @@
 /// <reference types="kendo-ui" />
 
 
-$(document).ready(function () {
+$(function () {
   interface IComponent {
     attachTag: string;
     compTag: string;
@@ -177,6 +177,9 @@ $(document).ready(function () {
     if (!notInit) {
       const jqName = tagToJqName(tagName);
       const id = '#' + attachElem.attr('id');
+
+      console.log(attrsAndOpts);
+
       $(id)[jqName](attrsAndOpts.options);
       if ($(id).data(jqName) === undefined) {
         widgetsToInit.push({

@@ -53,7 +53,7 @@ e.g. In VSCode editor vsc-kendo-components completes the skeleton snippet when y
   <link rel='stylesheet' href='http://kendo.cdn.telerik.com/{vresion}/styles/kendo.default.min.css'/>
   <link rel='stylesheet' href='http://kendo.cdn.telerik.com/{vresion}/styles/kendo.mobile.all.min.css'/>
   <script src='http://kendo.cdn.telerik.com/{vresion}/js/jquery.min.js'></script>
-  <script src='http://kendo.cdn.telerik.com/{vresion}/js/kendo.ui.min.js'></script>
+  <script src='http://kendo.cdn.telerik.com/{vresion}/js/kendo.all.min.js'></script>
   <script src='/node_modules/kendoui-components/dist/kendo-components.min.js'></script>
 </head>
 <body>
@@ -98,11 +98,11 @@ Hybrid UI example:
       <km-pane id='side-pane'>
         <km-view>
           <km-button href="#bar"
-                    data-target="main-pane">
+                     data-target="main-pane">
             Bar (main pane)
           </km-button>
           <km-button href="#baz"
-                    data-target="_top">
+                     data-target="_top">
             Baz (application)
           </km-button>
         </km-view>
@@ -131,10 +131,10 @@ Hybrid UI example:
 MVVM example:
 ~~~html
     <k-date-picker data-bind="visible: isVisible,
-                            enabled: isEnabled,
-                            value: selectedDate,
-                            events: { change: onChange }"
-                            style="width: 100%"></k-date-picker>
+                       enabled: isEnabled,
+                       value: selectedDate,
+                       events: { change: onChange }"
+                   style="width: 100%"></k-date-picker>
     ... ...
 
     <script>
@@ -168,11 +168,11 @@ e.g. See a page demo below where even there are no js codes. Source codes in pag
       <k-auto-complete id="customers"
                        data-text-field="ContactName"
                        data-source='{
-                         type:"odata",
-                         transport:{
-                           read:"https://demos.telerik.com/kendo-ui/service/Northwind.svc/Customers"},
-                           group:{field:"Country"}
-                          }'
+                             type:"odata",
+                             transport:{
+                               read:"https://demos.telerik.com/kendo-ui/service/Northwind.svc/Customers"},
+                               group:{field:"Country"}
+                             }'
                        heigth="400"
                        style="width:100%"></k-auto-complete>
       <div class="demo-hint">Hint: type "an"</div>
@@ -229,13 +229,13 @@ e.g. "tmpl" as the value of template attribute in snippet below is the id name o
  e.g. 'vertical' is an id and it also an string value of attribute orientation, quoted as '"vertical"'.
 ~~~html
     <k-splitter id="vertical"
-            orientation='"vertical"'
-            panes='[
-                { collapsible: false },
-                { collapsible: false, size: "100px" },
-                { collapsible: false, resizable: false, size:
-                "100px" }
-                ]'>
+                orientation='"vertical"'
+                panes='[
+                      { collapsible: false },
+                      { collapsible: false, size: "100px" },
+                      { collapsible: false, resizable: false, size:
+                      "100px" }
+                    ]'>
 ... ...
 ~~~
 
@@ -296,10 +296,10 @@ e.g. You can put listener literal string directly in an attribute value.
 ~~~html
       <k-auto-complete id="states"
                        open='function() {
-                                if ("kendoConsole" in window) {
-                                    kendoConsole.log("event :: open");
-                                }
-                              }'
+                             if ("kendoConsole" in window) {
+                               kendoConsole.log("event :: open");
+                             }
+                           }'
                        ... ...
                        style='width:100%'></k-auto-complete>
 ~~~
@@ -326,10 +326,10 @@ You can configurate Kendo widgets in templates in script or attribute value lite
   <script>
       var items = [
         { template: `<label>SHAPE:</label>
-        <k-drop-down-list id='shape' 
+        <k-drop-down-list id='shape'
                           data-text-field='text'
                           data-value-field='value'
-                          data-source=dataShape 
+                          data-source=dataShape
                           change=onShapeChange></k-drop-down-list>` },
       ... ...
   </script>
@@ -342,8 +342,8 @@ e.g. Listener below change a menu orientation by re-building it(see menu demos f
         $('#openAnimation').prop('hidden', !$('#open')[0].checked);
         $('#closeAnimation').prop('hidden', !$('#close')[0].checked);
         $('k-menu').remove();
-        $(`<k-menu id="menu" 
-                   data-source=data 
+        $(`<k-menu id="menu"
+                   data-source=data
                    animation=getAnimation()></k-menu>`).appendTo(`#menuContainer`);
       });
 ~~~

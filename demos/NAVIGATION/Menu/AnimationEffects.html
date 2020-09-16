@@ -19,7 +19,7 @@
   <script
           src='http://kendo.cdn.telerik.com/2020.2.617/js/jquery.min.js'></script>
   <script
-          src='http://kendo.cdn.telerik.com/2020.2.617/js/kendo.ui.min.js'></script>
+          src='http://kendo.cdn.telerik.com/2020.2.617/js/kendo.all.min.js'></script>
   <script
           src='/out/kendoui-components.js'></script>
 </head>
@@ -167,8 +167,10 @@
         $('#closeAnimation').prop('hidden', !$('#close')[0].checked);
         $('k-menu').remove();
         $('<k-menu id="menu"
-                   data-source=data
-                   animation=getAnimation()></k-menu>').appendTo('#menuContainer');
+                   data
+                   -
+                   source=data
+                   animation = getAnimation() ></k - menu > ').appendTo('#menuContainer');
       });
     </script>
 

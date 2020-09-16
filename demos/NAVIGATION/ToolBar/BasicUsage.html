@@ -19,7 +19,7 @@
   <script
           src='http://kendo.cdn.telerik.com/2020.2.617/js/jquery.min.js'></script>
   <script
-          src='http://kendo.cdn.telerik.com/2020.2.617/js/kendo.ui.min.js'></script>
+          src='http://kendo.cdn.telerik.com/2020.2.617/js/kendo.all.min.js'></script>
   <script
           src='/out/kendoui-components.js'></script>
 </head>
@@ -46,45 +46,54 @@
         { template: "<label for='dropdown'>Format:</label>" },
         {
           template: "<k-drop-down-list option-label='Paragraph'
-                                       data-text-field='text'
-                                       data-value-field='value'
-                                       data-source='dataSource'
-                                       id='dropdown'
-                                       style='width: 150px;'></k-drop-down-list>",
+                                       data-
+                                       text
+                                       -
+                                       field='text'
+                                       data
+                                       -
+                                       value
+                                       -
+                                       field='value'
+                                       data
+                                       -
+                                       source='dataSource'
+                                       id = 'dropdown'
+                                       style = 'width: 150px;' ></k - drop - down - list > ",
           overflow: "never"
         },
-        { type: "separator" },
-        {
-          type: "buttonGroup",
+      { type: "separator" },
+      {
+        type: "buttonGroup",
           buttons: [
             { icon: "align-left", text: "Left", togglable: true, group: "text-align" },
             { icon: "align-center", text: "Center", togglable: true, group: "text-align" },
             { icon: "align-right", text: "Right", togglable: true, group: "text-align" }
           ]
-        },
-        {
-          type: "buttonGroup",
+      },
+      {
+        type: "buttonGroup",
           buttons: [
             { icon: "bold", text: "Bold", togglable: true },
             { icon: "italic", text: "Italic", togglable: true },
             { icon: "underline", text: "Underline", togglable: true }
           ]
-        },
-        {
-          type: "button",
+      },
+      {
+        type: "button",
           text: "Action",
-          overflow: "always"
-        },
-        {
-          type: "button",
+            overflow: "always"
+      },
+      {
+        type: "button",
           text: "Another Action",
-          overflow: "always"
-        },
-        {
-          type: "button",
+            overflow: "always"
+      },
+      {
+        type: "button",
           text: "Something else here",
-          overflow: "always"
-        }
+            overflow: "always"
+      }
       ];
 
       var dataSource = [

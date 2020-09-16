@@ -1,4 +1,4 @@
-#!/usr/bin/env ts-node -O {"type":"module","module":"commonjs","target":"es2016","experimental-modules":true}
+#!/usr/bin/env ts-node -O {"module":"commonjs","target":"es2016"}
 /// <reference types='jquery' />
 /// <reference types="kendo-ui" />
 

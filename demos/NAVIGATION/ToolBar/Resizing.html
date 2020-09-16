@@ -19,7 +19,7 @@
   <script
           src='http://kendo.cdn.telerik.com/2020.2.617/js/jquery.min.js'></script>
   <script
-          src='http://kendo.cdn.telerik.com/2020.2.617/js/kendo.ui.min.js'></script>
+          src='http://kendo.cdn.telerik.com/2020.2.617/js/kendo.all.min.js'></script>
   <script
           src='/out/kendoui-components.js'></script>
 </head>
@@ -104,31 +104,54 @@
 
         {
           template: "<span><label>Contacts:</label><k-drop-down-list id='contacts'
-                                                                     option-label='Ann Devon'
-                                                                     data-text-field='text'
-                                                                     data-value-field='value'
-                                                                     data-source=dataContacts
-                                                                     style='width: 150px;' ></k-drop-down-list></span>",
+                                                                     option-
+                                                                     label='Ann Devon'
+                                                                     data
+                                                                     -
+                                                                     text
+                                                                     -
+                                                                     field='text'
+                                                                     data
+                                                                     -
+                                                                     value
+                                                                     -
+                                                                     field='value'
+                                                                     data
+                                                                     -
+                                                                     source=dataContacts
+                                                                     style = 'width: 150px;' ></k - drop - down - list ></span > ",
           overflow: "never"
         },
-        {
-          template: "<div><label>Labels:</label><k-drop-down-list id='labels'
-                                                                  option-label='Forums'
-                                                                  data-text-field='text'
-                                                                  data-value-field='value'
-                                                                  data-source=dataForums
-                                                                  style='width: 150px;' ></k-drop-down-list></div>",
-          overflowTemplate: "<span></span>"
-        },
-        { type: "separator" },
-        {
-          type: "buttonGroup",
+      {
+        template: "<div><label>Labels:</label><k-drop-down-list id='labels'
+                                                                option
+                                                                -
+                                                                label='Forums'
+                                                                data
+                                                                -
+                                                                text
+                                                                -
+                                                                field='text'
+                                                                data
+                                                                -
+                                                                value
+                                                                -
+                                                                field='value'
+                                                                data
+                                                                -
+                                                                source=dataForums
+                                                                style = 'width: 150px;' ></k - drop - down - list ></div > ",
+        overflowTemplate: "<span></span>"
+      },
+      { type: "separator" },
+      {
+        type: "buttonGroup",
           buttons: [
             { imageUrl: "https://demos.telerik.com/kendo-ui/content/web/toolbar/done.png", text: "Done", togglable: true, group: "category" },
             { imageUrl: "https://demos.telerik.com/kendo-ui/content/web/toolbar/todo.png", text: "To Do", togglable: true, group: "category" },
             { imageUrl: "https://demos.telerik.com/kendo-ui/content/web/toolbar/important.png", text: "Important", togglable: true, group: "category" }
           ]
-        },
+      },
       ];
 
       var dataContacts = [
