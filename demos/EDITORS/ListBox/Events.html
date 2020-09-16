@@ -18,7 +18,7 @@
           src='http://kendo.cdn.telerik.com/2020.2.617/js/jquery.min.js'></script>
   <script src="/assets/console.js"></script>
   <script
-          src='http://kendo.cdn.telerik.com/2020.2.617/js/kendo.ui.core.min.js'></script>
+          src='http://kendo.cdn.telerik.com/2020.2.617/js/kendo.ui.min.js'></script>
   <script
           src='/out/kendoui-components.js'></script>
 </head>
@@ -35,20 +35,20 @@
                     draggable=true
                     drop-sources="['selected']"
                     toolbar='{
-                        position: "right",
-                        tools: ["moveUp", "moveDown",
-                        "transferTo", "transferFrom",
-                        "transferAllTo", "transferAllFrom",
-                        "remove"]
+                          position: "right",
+                          tools: ["moveUp", "moveDown",
+                          "transferTo", "transferFrom",
+                          "transferAllTo", "transferAllFrom",
+                          "remove"]
                         }'
                     selectable="multiple"
                     data-source='{
-                      type: "odata",
-                      transport: {
-                      read:
-                      "https://demos.telerik.com/kendo-ui/service/Northwind.svc/Customers"
-                      }
-                      }'
+                          type: "odata",
+                          transport: {
+                            read:
+                            "https://demos.telerik.com/kendo-ui/service/Northwind.svc/Customers"
+                          }
+                        }'
                     data-text-field="ContactName"
                     data-value-field="CustomerID"
                     add="onAdd"
@@ -64,20 +64,20 @@
         <k-list-box id="selected"
                     connect-with="'optional'"
                     draggable='{
-                        placeholder: function (element) {
-                        return element.clone().css({
-                        "opacity": 0.3,
-                        "border": "1px dashed #000000"
-                        });
-                        }
+                          placeholder: function (element) {
+                            return element.clone().css({
+                              "opacity": 0.3,
+                              "border": "1px dashed #000000"
+                            });
+                          }
                         }'
                     drop-sources="['optional']"
                     selectable="multiple"
                     data-text-field="ContactName"
                     data-value-field="CustomerID"
                     toolbar='{
-                        position: "right",
-                        tools: ["moveUp", "moveDown", "remove"]
+                          position: "right",
+                          tools: ["moveUp", "moveDown", "remove"]
                         }'
                     add="onAdd"
                     change="onChange"

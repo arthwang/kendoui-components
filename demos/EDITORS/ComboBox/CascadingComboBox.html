@@ -17,7 +17,7 @@
   <script
           src='http://kendo.cdn.telerik.com/2020.2.617/js/jquery.min.js'></script>
   <script
-          src='http://kendo.cdn.telerik.com/2020.2.617/js/kendo.ui.core.min.js'></script>
+          src='http://kendo.cdn.telerik.com/2020.2.617/js/kendo.ui.min.js'></script>
   <script
           src='/out/kendoui-components.js'></script>
 </head>
@@ -36,11 +36,11 @@
                        data-text-field="CategoryName"
                        data-value-field="CategoryID"
                        data-source="{
-                         type:'odata',
-                         serverFiltering:true,
-                         transport:{
-                           read:'https://demos.telerik.com/kendo-ui/service/Northwind.svc/Categories'
-                          }} "></k-combo-box>
+                             type:'odata',
+                             serverFiltering:true,
+                             transport:{
+                               read:'https://demos.telerik.com/kendo-ui/service/Northwind.svc/Categories'
+                             }} "></k-combo-box>
         </li>
         <li>
           <label for="products">Products</label>
@@ -54,11 +54,11 @@
                        data-text-field="ProductName"
                        data-value-field="ProductID"
                        data-source="{
-                         type:'odata',
-                         serverFiltering:true,
-                         transport:{
-                           read:'https://demos.telerik.com/kendo-ui/service/Northwind.svc/Products'
-                          }}"></k-combo-box>
+                             type:'odata',
+                             serverFiltering:true,
+                             transport:{
+                               read:'https://demos.telerik.com/kendo-ui/service/Northwind.svc/Products'
+                             }}"></k-combo-box>
         </li>
         <li>
           <label for="orders">Orders</label>
@@ -72,11 +72,11 @@
                        data-text-field="Order.ShipCity"
                        data-value-field="OrderID"
                        data-source="{
-                         type:'odata',
-                         serverFiltering:true,
-                         transport:{
-                           read:'https://demos.telerik.com/kendo-ui/service/Northwind.svc/Order_Details?$expand=Order'
-                          }}"></k-combo-box>
+                             type:'odata',
+                             serverFiltering:true,
+                             transport:{
+                               read:'https://demos.telerik.com/kendo-ui/service/Northwind.svc/Order_Details?$expand=Order'
+                             }}"></k-combo-box>
         </li>
         <li>
           <button class="k-button k-primary"

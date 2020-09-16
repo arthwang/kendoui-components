@@ -17,7 +17,7 @@
   <script
           src='http://kendo.cdn.telerik.com/2020.2.617/js/jquery.min.js'></script>
   <script
-          src='http://kendo.cdn.telerik.com/2020.2.617/js/kendo.ui.core.min.js'></script>
+          src='http://kendo.cdn.telerik.com/2020.2.617/js/kendo.ui.min.js'></script>
   <script
           src='/out/kendoui-components.js'></script>
 </head>
@@ -32,20 +32,20 @@
                         data-text-field="ContactName"
                         data-value-field="CustomerID"
                         header-template='<div class="dropdown-header k-widget k-header">
-                                        <span>Photo</span>
-                                        <span>Contact info</span>
-                                        </div>'
+                            <span>Photo</span>
+                            <span>Contact info</span>
+                            </div>'
                         footer-template='Total #: instance.dataSource.total() # items found'
                         value-template='valTempl'
                         template="templ"
                         data-source='{
-                                  transport:{
-                                      read: {
-                                        dataType: "jsonp",
-                                        url: "https://demos.telerik.com/kendo-ui/service/Customers",
-                                      }
-                                    }
-                                  }'
+                              transport:{
+                                read: {
+                                  dataType: "jsonp",
+                                  url: "https://demos.telerik.com/kendo-ui/service/Customers",
+                                }
+                              }
+                            }'
                         height=400>
       </k-drop-down-list>
       <p class="demo-hint">
