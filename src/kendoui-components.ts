@@ -178,8 +178,6 @@ $(function () {
       const jqName = tagToJqName(tagName);
       const id = '#' + attachElem.attr('id');
 
-      console.log(attrsAndOpts);
-
       $(id)[jqName](attrsAndOpts.options);
       if ($(id).data(jqName) === undefined) {
         widgetsToInit.push({
