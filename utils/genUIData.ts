@@ -1,4 +1,4 @@
-#!/usr/bin/env ts-node -O {"module":"commonjs","target":"es6"}
+#!/usr/bin/env ts-node -O {"type":"module","module":"commonjs","target":"es2016","experimental-modules":true}
 /// <reference types='jquery' />
 /// <reference types="kendo-ui" />
 
@@ -109,7 +109,7 @@ const components = {
   MobileView: { attachTag: 'div', isPro: false },
 }
 
-export function genCoreComponentsData(defName: string, isPro: boolean) {
+function genComponentsData(defName: string, isPro: boolean) {
   const defStr = fs.readFileSync(defName).toString();
   const jqReg = /^\s*interface\s+JQuery\s*{([\s\S]+)}/m;
   const jqMatch = defStr.match(jqReg);
@@ -184,4 +184,4 @@ function genComponentData(fileStr, widget, namespace, optionsName) {
 }
 
 const defFileName = "../node_modules/@types/kendo-ui/index.d.ts";
-genCoreComponentsData(defFileName, true);
+genComponentsData(defFileName, true);
